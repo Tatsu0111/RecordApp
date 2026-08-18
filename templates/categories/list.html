@@ -1,0 +1,32 @@
+{%extends "base.html"%}
+{%block title%}収支管理 | カテゴリ一覧{%endblock%}
+{%block header%}<h1>カテゴリ一覧</h1>{%endblock%}
+{%block content%}
+    <table border="1">
+        <thead>
+            <tr><th>ID</th><th>名前</th></tr>
+        </thead>
+        <tbody>
+            {%for category in categories%}
+            <tr>
+                <td>{{category.id}}</td><td>{{category.name}}</td>
+                <td>
+                    {% if category.id != 1 %}
+                        <form action="{{ url_for('category_form', id=category.id) }}"
+                            method="get"
+                            style="display:inline;">
+                            <button type="submit">修正</button>
+                        </form>
+                        <form action="{{ url_for('category_delete', id=category.id) }}" method="post" style="display:inline;">
+                            <button onclick="return confirm('削除しますか？')">削除</button>
+                        </form>
+                    {%endif%}
+                </td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+    <form action="/categories/add" method="get">
+        <button type="submit">カテゴリを登録する</button>
+    </form>
+{%endblock%}

@@ -1,0 +1,33 @@
+{%extends "base.html"%}
+{%block title%}収支管理 | 収支一覧{%endblock%}
+{%block header%}<h1>収支一覧</h1>{%endblock%}
+{%block content%}
+    <table border="1">
+        <thead>
+            <tr><th>ID</th><th>日付</th><th>名前</th><th>カテゴリ</th><th>場所</th>
+                <th>投資</th><th>回収</th><th>収支</th><th>メモ</th></tr>
+        </thead>
+        <tbody>
+            {%for record in records%}
+            <tr>
+                <td>{{record.id}}</td><td>{{record.date}}</td><td>{{record.title}}</td>
+                <td>{{record.category.name}}</td><td>{{record.place.name}}</td><td>{{record.investment}}</td>
+                <td>{{record.payout}}</td><td>{{record.profit}}</td><td>{{record.memo}}</td>
+                <td>
+                    <form action="{{ url_for('record_form', id=record.id) }}"
+                        method="get"
+                        style="display:inline;">
+                        <button type="submit">修正</button>
+                    </form>
+                    <form action="{{ url_for('record_delete', id=record.id) }}" method="post" style="display:inline;">
+                        <button onclick="return confirm('削除しますか？')">削除</button>
+                    </form>
+                </td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+    <form action="/records/add" method="get">
+        <button type="submit">収支を登録する</button>
+    </form>
+{%endblock%}

@@ -1,0 +1,27 @@
+{%extends "base.html"%}
+{% block title %}
+店舗・開催場管理 | {{ "登録" if not row else "修正" }}
+{% endblock %}
+{%block header%}
+<h1>店舗・開催場{{ "登録" if not row else "修正" }}</h1>
+{%endblock%}
+{%block content%}
+<form method="post">
+    <input type="text" name="name" value="{{ row.name if row else '' }}">
+    <select name="category_id">
+        {% for category in categories %}
+            <option value="{{ category.id }}" {% if row and row.category_id == category.id %}selected{% endif %}>
+                {{ category.name }}
+            </option>
+        {% endfor %}
+    </select>
+    <button type="submit">
+        {{ "登録" if not row else "修正" }}
+    </button>
+</form>
+{%endblock%}
+{%block footer%}
+<a href="{{url_for('place_master')}}">一覧に戻る</a>
+<br>
+<a href="{{url_for('index')}}">TOP画面へ</a>
+{%endblock%}

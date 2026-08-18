@@ -1,0 +1,20 @@
+{%extends "base.html"%}
+{% block title %}
+カテゴリ管理 | {{ "登録" if not row else "修正" }}
+{% endblock %}
+{%block header%}
+<h1>カテゴリ{{ "登録" if not row else "修正" }}</h1>
+{%endblock%}
+{%block content%}
+<form method="post">
+    <input type="text" name="name" value="{{ row.name if row else '' }}">
+    <button type="submit">
+        {{ "登録" if not row else "修正" }}
+    </button>
+</form>
+{%endblock%}
+{%block footer%}
+<a href="{{url_for('category_master')}}">一覧に戻る</a>
+<br>
+<a href="{{url_for('index')}}">TOP画面へ</a>
+{%endblock%}

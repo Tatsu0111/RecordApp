@@ -1,0 +1,32 @@
+{%extends "base.html"%}
+{%block title%}収支管理 | 場所一覧{%endblock%}
+{%block header%}<h1>店舗・開催場一覧</h1>{%endblock%}
+{%block content%}
+    <table border="1">
+        <thead>
+            <tr><th>ID</th><th>名前</th><th>カテゴリ</th></tr>
+        </thead>
+        <tbody>
+            {%for place in places%}
+            <tr>
+                <td>{{place.id}}</td><td>{{place.name}}</td><td>{{place.category.name}}</td>
+                <td>
+                    {% if place.id != 1 %}
+                        <form action="{{ url_for('place_form', id=place.id) }}"
+                            method="get"
+                            style="display:inline;">
+                            <button type="submit">修正</button>
+                        </form>
+                        <form action="{{ url_for('place_delete', id=place.id) }}" method="post" style="display:inline;">
+                            <button onclick="return confirm('削除しますか？')">削除</button>
+                        </form>
+                    {%endif%}
+                </td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+    <form action="/places/add" method="get">
+        <button type="submit">場所を登録する</button>
+    </form>
+{%endblock%}
