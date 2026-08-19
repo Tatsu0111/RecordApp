@@ -4,9 +4,10 @@ import services.place_service as ps
 import services.category_service as cs
 from models import Record, Place, Category
 from datetime import datetime
-# from forms import RecordForm
+from forms import RecordForm, PlaceForm, CategoryForm
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'dev-secret-key-2026'
 
 @app.route('/')
 def index():
@@ -19,50 +20,27 @@ def show_records():
 @app.route('/records/add', methods=['GET','POST'])
 @app.route('/records/<int:id>/edit', methods=['GET','POST'])
 def record_form(id=None):
-    if request.method == 'POST':
-        while True:
-            try:
-                date = datetime.strptime(request.form["date"], "%Y-%m-%d").date()
-                break
-            except ValueError:
-                error = '正しく入力してください'
-                return rt('records/form.html', row=None, categories=cs.get_categories(), places=ps.get_places(), error=error)
-        title = request.form["title"]
-        category_id = int(request.form["category_id"])
-        place_id = int(request.form["place_id"])
-        investment = int(request.form["investment"])
-        payout = int(request.form["payout"])
-        memo = request.form["memo"]
+    row = None if id is None else rs.get_record(id)
+    form = RecordForm(obj=row)
+    form.category_id.choices = [(c.id, c.name)for c in cs.get_categories()]
+    form.place_id.choices = [(p.id, p.name)for p in ps.get_places()]
+    if form.validate_on_submit():
+        data = {
+            'date': form.date.data,
+            'title': form.title.data or '未登録',
+            'category_id': form.category_id.data,
+            'place_id': form.place_id.data,
+            'investment': form.investment.data or 0,
+            'payout': form.payout.data or 0,
+            'memo': form.memo.data
+        }
         if id is None:
-            record = Record(
-                date = date,
-                title = title,
-                category_id = category_id,
-                place_id = place_id,
-                investment = investment,
-                payout = payout,
-                memo = memo
-            )
+            record = Record(**data)
             rs.insert_record(record)
         else:
-            rs.update_record(
-                id,
-                data = {
-                'date':date,
-                'title':title,
-                'category_id':category_id,
-                'place_id':place_id,
-                'investment':investment,
-                'payout':payout,
-                'memo':memo
-                }            
-            )
+            rs.update_record(id, data)
         return redirect(url_for('show_records'))
-    if id is None:
-        row = None
-    else:
-        row = rs.get_record(id)
-    return rt('records/form.html',row=row,categories=cs.get_categories(),places=ps.get_places())
+    return rt('records/form.html',form=form,row=row)
 
 @app.route('/records/<int:id>/delete',methods=['POST'])
 def record_delete(id):
@@ -76,29 +54,21 @@ def place_master():
 @app.route('/places/add', methods=['GET','POST'])
 @app.route('/places/<int:id>/edit', methods=['GET','POST'])
 def place_form(id=None):
-    if request.method == 'POST':
-        name = request.form["name"]
-        category_id = int(request.form["category_id"])
+    row = None if id is None else ps.get_place(id)
+    form = PlaceForm(obj=row)
+    form.category_id.choices = [(c.id, c.name)for c in cs.get_categories()]
+    if form.validate_on_submit():
+        data = {
+            'name': form.name.data,
+            'category_id': form.category_id.data
+        }
         if id is None:
-            place = Place(
-                name = name,
-                category_id = category_id,
-            )
+            place = Place(**data)
             ps.insert_place(place)
         else:
-            ps.update_place(
-                id,
-                data = {
-                'name':name,
-                'category_id':category_id
-                }            
-            )
+            ps.update_place(id, data)
         return redirect(url_for('place_master'))
-    if id is None:
-        row = None
-    else:
-        row = ps.get_place(id)
-    return rt('places/form.html',row=row,categories=cs.get_categories())
+    return rt('places/form.html',form=form,row=row)
 
 @app.route('/places/<int:id>/delete',methods=['POST'])
 def place_delete(id):
@@ -112,26 +82,19 @@ def category_master():
 @app.route('/categories/add', methods=['GET','POST'])
 @app.route('/categories/<int:id>/edit', methods=['GET','POST'])
 def category_form(id=None):
-    if request.method == 'POST':
-        name = request.form["name"]
+    row = None if id is None else cs.get_category(id)
+    form = CategoryForm(obj=row)
+    if form.validate_on_submit():
+        data = {
+            'name': form.name.data
+        }
         if id is None:
-            category = Category(
-                name = name
-            )
+            category = Category(**data)
             cs.insert_category(category)
         else:
-            cs.update_category(
-                id,
-                data = {
-                'name':name
-                }            
-            )
+            cs.update_category(id, data)
         return redirect(url_for('category_master'))
-    if id is None:
-        row = None
-    else:
-        row = cs.get_category(id)
-    return rt('categories/form.html',row=row)
+    return rt('categories/form.html',form=form,row=row)
 
 @app.route('/categories/<int:id>/delete',methods=['POST'])
 def category_delete(id):

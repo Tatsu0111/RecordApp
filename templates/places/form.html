@@ -6,20 +6,27 @@
 <h1>店舗・開催場{{ "登録" if not row else "修正" }}</h1>
 {%endblock%}
 {%block content%}
-<form method="post">
-    <input type="text" name="name" value="{{ row.name if row else '' }}">
-    <select name="category_id">
-        {% for category in categories %}
-            <option value="{{ category.id }}" {% if row and row.category_id == category.id %}selected{% endif %}>
-                {{ category.name }}
-            </option>
+<form method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.name.label }}
+        {{ form.name() }}
+        {% for error in form.name.errors %}
+            <p class="error">{{ error }}</p>
         {% endfor %}
-    </select>
-    <button type="submit">
-        {{ "登録" if not row else "修正" }}
-    </button>
+    </div>
+    <div>
+        {{ form.category_id.label }}
+        {{ form.category_id() }}
+        {% for error in form.category_id.errors %}
+            <p class="error">{{ error }}</p>
+        {% endfor %}
+    </div>
+    <div>
+        {{ form.submit(value="登録" if not row else "修正") }}
+    </div>
 </form>
-{%endblock%}
+{% endblock %}
 {%block footer%}
 <a href="{{url_for('place_master')}}">一覧に戻る</a>
 <br>
