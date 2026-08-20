@@ -6,6 +6,13 @@
 </head>
 <body>
     {%block header%}ヘッダー{%endblock%}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <p class="flash {{ category }}">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     {%block content%}内容{%endblock%}
     <hr>
     {%block footer%}<a href="{{url_for('index')}}">TOP画面へ</a>{%endblock%}

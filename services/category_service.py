@@ -1,5 +1,12 @@
-from models import Category
+from models import Category,Record
 from database import Session
+
+def has_records(category_id):
+    session = Session()
+    try:
+        return session.query(Record).filter_by(category_id=category_id).first() is not None
+    finally:
+        session.close()
 
 def get_categories():
     session = Session()
@@ -12,6 +19,13 @@ def get_category(id):
     session = Session()
     try:
         return session.query(Category).filter(Category.id == id).first()
+    finally:
+        session.close()
+        
+def get_category_by_name(name):
+    session = Session()
+    try:
+        return session.query(Category).filter_by(name=name).first()
     finally:
         session.close()
 

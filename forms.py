@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms.fields import(StringField,IntegerField,DateField,SelectField,TextAreaField,SubmitField)
 from wtforms.validators import(DataRequired,InputRequired,NumberRange,Optional,Length)
-from validators import multiple_of_10, not_future
+from validators import multiple_of_10, not_future, unique_place_name, unique_category_name
 
 class RecordForm(FlaskForm):
     date = DateField('日付：', validators=[DataRequired('日付は必須項目です'),not_future],format="%Y-%m-%d",render_kw={"placeholder":"yyyy/mm/dd"})

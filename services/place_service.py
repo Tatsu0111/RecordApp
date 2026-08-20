@@ -1,7 +1,14 @@
-from models import Place
+from models import Place,Record
 from database import Session
 from sqlalchemy.orm import joinedload
 
+def has_records(place_id):
+    session = Session()
+    try:
+        return session.query(Record).filter_by(place_id=place_id).first() is not None
+    finally:
+        session.close()
+        
 def get_places():
     session = Session()
     try:
@@ -13,6 +20,13 @@ def get_place(id):
     session = Session()
     try:
         return session.query(Place).filter(Place.id == id).first()
+    finally:
+        session.close()
+        
+def get_place_by_name(name):
+    session = Session()
+    try:
+        return session.query(Place).filter_by(name=name).first()
     finally:
         session.close()
 
