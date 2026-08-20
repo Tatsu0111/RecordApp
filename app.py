@@ -123,6 +123,8 @@ def category_delete(id):
         flash('この項目は削除できません', 'error')
     elif cs.has_records(id):
         flash('このカテゴリは収支で使用されているため削除できません', 'error')
+    elif cs.has_places(id):
+        flash('このカテゴリは場所で使用されているため削除できません', 'error')
     else:
         cs.delete_category(id)
         flash('カテゴリを削除しました', 'success')

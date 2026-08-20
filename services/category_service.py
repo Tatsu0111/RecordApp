@@ -1,10 +1,17 @@
-from models import Category,Record
+from models import Category,Record,Place
 from database import Session
 
 def has_records(category_id):
     session = Session()
     try:
         return session.query(Record).filter_by(category_id=category_id).first() is not None
+    finally:
+        session.close()
+        
+def has_places(category_id):
+    session = Session()
+    try:
+        return session.query(Place).filter_by(category_id=category_id).first() is not None
     finally:
         session.close()
 
