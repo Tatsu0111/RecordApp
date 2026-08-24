@@ -15,7 +15,14 @@ def index():
 
 @app.route('/records')
 def show_records():
-    return rt('records/list.html',records = rs.get_records())
+    sort = request.args.get('sort', 'date_desc')
+    keyword = request.args.get('keyword', '')
+    category_id = request.args.get('category_id')
+    place_id = request.args.get('place_id')
+    date_from = request.args.get('date_from')
+    date_to = request.args.get('date_to')
+    records = rs.get_records(sort,keyword,category_id,place_id,date_from,date_to)
+    return rt('records/list.html', records=records, sort=sort, keyword=keyword, category_id=category_id, place_id=place_id, date_from=date_from, date_to=date_to,categories=cs.get_categories(),places=ps.get_places())
 
 @app.route('/records/add', methods=['GET','POST'])
 @app.route('/records/<int:id>/edit', methods=['GET','POST'])

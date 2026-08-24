@@ -2,6 +2,44 @@
 {%block title%}収支管理 | 収支一覧{%endblock%}
 {%block header%}<h1>収支一覧</h1>{%endblock%}
 {%block content%}
+<form action="{{ url_for('show_records') }}" method="get">
+    <div>
+        <label>検索：</label>
+        <input type="search" name="keyword" placeholder="キーワードを入力" value="{{keyword}}">
+        <label>カテゴリ</label>
+        <select name="category_id" id="category_id">
+            <option value="">すべて</option>
+            {%for category in categories%}
+            <option value="{{category.id}}" {%if category_id == category.id|string%}selected{% endif %}>{{category.name}}</option>
+            {%endfor%}
+        </select>
+        <label>場所</label>
+        <select name="place_id" id="place_id">
+            <option value="">すべて</option>
+            {% for place in places %}
+                <option value="{{ place.id }}"
+                    {% if place_id == place.id|string %}selected{% endif %}>
+                    {{ place.name }}
+                </option>
+            {% endfor %}
+        </select>
+        <label>期間(from-to)</label>
+        <input type="date" name="date_from" placeholder="yyyy/mm/dd" value="{{date_from}}">
+        <input type="date" name="date_to" placeholder="yyyy/mm/dd" value="{{date_to}}">
+    </div>
+    <div>
+        <label for="sort">並び順：</label>
+        <select name="sort" id="sort">
+            <option value="date_desc" {% if sort == 'date_desc' %}selected{% endif %}>日付：新しい順</option>
+            <option value="date_asc" {% if sort == 'date_asc' %}selected{% endif %}>日付：古い順</option>
+            <option value="profit_desc" {% if sort == 'profit_desc' %}selected{% endif %}>収支：大きい順</option>
+            <option value="profit_asc" {% if sort == 'profit_asc' %}selected{% endif %}>収支：小さい順</option>
+            <option value="investment_desc" {% if sort == 'investment_desc' %}selected{% endif %}>投資：大きい順</option>
+            <option value="investment_asc" {% if sort == 'investment_asc' %}selected{% endif %}>投資：小さい順</option>
+        </select>
+    </div>
+    <button type="submit">検索・並び替え</button>
+</form>
     <table border="1">
         <thead>
             <tr><th>ID</th><th>日付</th><th>名前</th><th>カテゴリ</th><th>場所</th>

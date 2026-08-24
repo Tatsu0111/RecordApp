@@ -1,6 +1,6 @@
 from models import Record
 from database import Session
-from datetime import date
+from datetime import datetime
 from sqlalchemy import func
 from sqlalchemy.orm import joinedload
 
@@ -24,10 +24,41 @@ def get_winRate():
         all += 1
     return round(count / all * 100,1)
 
-def get_records():
+def get_records(sort='date_desc', keyword=None, category_id=None, place_id=None, date_from=None, date_to=None):
     session = Session()
     try:
-        records = session.query(Record).options(joinedload(Record.category),joinedload(Record.place)).all()
+        query = session.query(Record).options(joinedload(Record.category),joinedload(Record.place))
+        if keyword:
+            query = query.filter(Record.title.like(f'%{keyword}%'))
+            
+        if category_id:
+            query = query.filter(Record.category_id == int(category_id))
+            
+        if place_id:
+            query = query.filter(Record.place_id == int(place_id))
+            
+        if date_from:
+            date_from = datetime.strptime(date_from, '%Y-%m-%d').date()
+            query = query.filter(Record.date >= date_from)
+            
+        if date_to:
+            date_to = datetime.strptime(date_to, '%Y-%m-%d').date()
+            query = query.filter(Record.date <= date_to)
+            
+        if sort == 'date_asc':
+            query = query.order_by(Record.date.asc())
+        elif sort == 'date_desc':
+            query = query.order_by(Record.date.desc())
+        elif sort == 'profit_asc':
+            query = query.order_by((Record.payout - Record.investment).asc())
+        elif sort == 'profit_desc':
+            query = query.order_by((Record.payout - Record.investment).desc())
+        elif sort == 'investment_asc':
+            query = query.order_by((Record.investment).asc())
+        elif sort == 'investment_desc':
+            query = query.order_by((Record.investment).desc())
+        
+        records = query.all()
         for record in records:
             record.profit = calc_profit(record.investment, record.payout)
         return records
