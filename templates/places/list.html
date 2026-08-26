@@ -2,6 +2,18 @@
 {%block title%}収支管理 | 場所一覧{%endblock%}
 {%block header%}<h1>店舗・開催場一覧</h1>{%endblock%}
 {%block content%}
+<form action="{{ url_for('place_master') }}" method="get">
+    <label>名前検索：</label>
+    <input type="search" name="keyword" placeholder="キーワードを入力" value="{{keyword}}">
+    <label>カテゴリ：</label>
+    <select name="category_id" id="category_id">
+        <option value="">すべて</option>
+        {%for category in categories%}
+        <option value="{{category.id}}" {%if category_id == category.id|string%}selected{% endif %}>{{category.name}}</option>
+        {%endfor%}
+    </select>
+    <button type="submit">検索</button>
+</form>
     <table border="1">
         <thead>
             <tr><th>ID</th><th>名前</th><th>カテゴリ</th></tr>

@@ -9,10 +9,15 @@ def has_records(place_id):
     finally:
         session.close()
         
-def get_places():
+def get_places(keyword=None, category_id=None):
     session = Session()
     try:
-        return session.query(Place).options(joinedload(Place.category)).all()
+        query = session.query(Place).options(joinedload(Place.category))
+        if keyword:
+            query = query.filter(Place.name.like(f'%{keyword}%'))
+        if category_id:
+            query = query.filter(Place.category_id == int(category_id))
+        return query.all()
     finally:
         session.close()
 

@@ -4,16 +4,16 @@
 {%block content%}
 <form action="{{ url_for('show_records') }}" method="get">
     <div>
-        <label>検索：</label>
-        <input type="search" name="keyword" placeholder="キーワードを入力" value="{{keyword}}">
-        <label>カテゴリ</label>
+        <label>名前検索：</label>
+        <input type="search" name="title_keyword" placeholder="キーワードを入力" value="{{title_keyword}}">
+        <label>カテゴリ：</label>
         <select name="category_id" id="category_id">
             <option value="">すべて</option>
             {%for category in categories%}
             <option value="{{category.id}}" {%if category_id == category.id|string%}selected{% endif %}>{{category.name}}</option>
             {%endfor%}
         </select>
-        <label>場所</label>
+        <label>場所：</label>
         <select name="place_id" id="place_id">
             <option value="">すべて</option>
             {% for place in places %}
@@ -23,9 +23,11 @@
                 </option>
             {% endfor %}
         </select>
-        <label>期間(from-to)</label>
+        <label>期間(from-to)：</label>
         <input type="date" name="date_from" placeholder="yyyy/mm/dd" value="{{date_from}}">
         <input type="date" name="date_to" placeholder="yyyy/mm/dd" value="{{date_to}}">
+        <label>メモ検索：</label>
+        <input type="search" name="memo_keyword" placeholder="キーワードを入力" value="{{memo_keyword}}">
     </div>
     <div>
         <label for="sort">並び順：</label>

@@ -1,0 +1,30 @@
+{%extends "base.html"%}
+{%block title%}収支分析 | カテゴリ別{%endblock%}
+{%block header%}<h1>カテゴリ別収支</h1>{%endblock%}
+{%block content%}
+<form action="{{ url_for('analysis_category') }}" method="get">
+    <label>期間(from-to)：</label>
+    <input type="date" name="date_from" placeholder="yyyy/mm/dd" value="{{date_from}}">
+    <input type="date" name="date_to" placeholder="yyyy/mm/dd" value="{{date_to}}">
+    <button type="submit">絞り込み</button>
+</form>
+<table border="1">
+    <thead>
+        <tr><th>名前</th><th>回数</th><th>勝数</th><th>負数</th><th>引分</th><th>勝率</th><th>投資</th><th>回収</th><th>収支</th></tr>
+    </thead>
+    <tbody>
+        {%for row in summary%}
+        <tr>
+            <td>{{row.category}}</td>
+            <td>{{row.count}}</td><td>{{row.win}}</td><td>{{row.lose}}</td><td>{{row.even}}</td><td>{{row.win_rate}}</td>
+            <td>{{row.investment}}</td><td>{{row.payout}}</td><td>{{row.profit}}</td>
+        </tr>
+        {%endfor%}
+    </tbody>
+</table>
+{%endblock%}
+{%block footer%}
+<a href="{{url_for('record_analyze')}}">収支分析に戻る</a>
+<br>
+<a href="{{url_for('index')}}">TOP画面へ</a>
+{%endblock%}

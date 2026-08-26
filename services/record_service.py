@@ -24,12 +24,12 @@ def get_winRate():
         all += 1
     return round(count / all * 100,1)
 
-def get_records(sort='date_desc', keyword=None, category_id=None, place_id=None, date_from=None, date_to=None):
+def get_records(sort='date_desc', title_keyword=None, category_id=None, place_id=None, date_from=None, date_to=None, memo_keyword=None):
     session = Session()
     try:
         query = session.query(Record).options(joinedload(Record.category),joinedload(Record.place))
-        if keyword:
-            query = query.filter(Record.title.like(f'%{keyword}%'))
+        if title_keyword:
+            query = query.filter(Record.title.like(f'%{title_keyword}%'))
             
         if category_id:
             query = query.filter(Record.category_id == int(category_id))
@@ -44,6 +44,9 @@ def get_records(sort='date_desc', keyword=None, category_id=None, place_id=None,
         if date_to:
             date_to = datetime.strptime(date_to, '%Y-%m-%d').date()
             query = query.filter(Record.date <= date_to)
+            
+        if memo_keyword:
+            query = query.filter(Record.memo.like(f'%{memo_keyword}%'))
             
         if sort == 'date_asc':
             query = query.order_by(Record.date.asc())

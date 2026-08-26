@@ -2,6 +2,7 @@ from flask import Flask, render_template as rt, request, redirect,url_for, flash
 import services.record_service as rs
 import services.place_service as ps
 import services.category_service as cs
+import services.analysis_service as anas
 from models import Record, Place, Category
 from datetime import datetime
 from forms import RecordForm, PlaceForm, CategoryForm
@@ -13,16 +14,32 @@ app.config['SECRET_KEY'] = 'dev-secret-key-2026'
 def index():
     return rt('index.html',total = rs.get_totalProfit(),win=rs.get_winRate())
 
+#収支
 @app.route('/records')
 def show_records():
+    allowed_sorts = [
+        'date_desc',
+        'date_asc',
+        'investment_desc',
+        'investment_asc',
+        'payout_desc',
+        'payout_asc'
+    ]
     sort = request.args.get('sort', 'date_desc')
-    keyword = request.args.get('keyword', '')
+    if sort not in allowed_sorts:
+        sort = 'date_desc'
+    title_keyword = request.args.get('title_keyword', '')
     category_id = request.args.get('category_id')
     place_id = request.args.get('place_id')
     date_from = request.args.get('date_from')
     date_to = request.args.get('date_to')
-    records = rs.get_records(sort,keyword,category_id,place_id,date_from,date_to)
-    return rt('records/list.html', records=records, sort=sort, keyword=keyword, category_id=category_id, place_id=place_id, date_from=date_from, date_to=date_to,categories=cs.get_categories(),places=ps.get_places())
+    memo_keyword = request.args.get('memo_keyword', '')
+    if not anas.validate_date_range(date_from, date_to):
+        flash('開始日は終了日より前の日付にしてください', 'error')
+        date_from = ''
+        date_to = ''
+    records = rs.get_records(sort,title_keyword,category_id,place_id,date_from,date_to,memo_keyword)
+    return rt('records/list.html', records=records, sort=sort, title_keyword=title_keyword, category_id=category_id, place_id=place_id, date_from=date_from, date_to=date_to, memo_keyword=memo_keyword, categories=cs.get_categories(),places=ps.get_places())
 
 @app.route('/records/add', methods=['GET','POST'])
 @app.route('/records/<int:id>/edit', methods=['GET','POST'])
@@ -57,9 +74,78 @@ def record_delete(id):
     flash('収支を削除しました', 'success')
     return redirect(url_for('show_records'))
 
+#分析
+@app.route('/analysis')
+def record_analyze():
+    return rt('analyze/index.html')
+
+@app.route('/analysis/lifetime')
+def analysis_lifetime():
+    date_from = request.args.get('date_from')
+    date_to = request.args.get('date_to')
+    if not anas.validate_date_range(date_from, date_to):
+        flash('開始日は終了日より前の日付にしてください', 'error')
+        date_from = ''
+        date_to = ''
+    summary = anas.get_lifetime_summary(date_from, date_to)
+    return rt('analyze/lifetime.html', summary=summary, date_from=date_from, date_to=date_to)
+
+@app.route('/analysis/year')
+def analysis_year():
+    summary = anas.get_yearly_summary()
+    return rt('analyze/year.html', summary=summary)
+
+@app.route('/analysis/month')
+def analysis_month():
+    selected_year = request.args.get('year', '')
+    years = anas.get_years()
+    summary = anas.get_monthly_summary(selected_year)
+    return rt('analyze/month.html', years=years, selected_year=selected_year, summary=summary)
+
+@app.route('/analysis/day')
+def analysis_day():
+    selected_year = request.args.get('year', '')
+    selected_month = request.args.get('month', '')
+    date_from = request.args.get('date_from')
+    date_to = request.args.get('date_to')
+    if not anas.validate_date_range(date_from, date_to):
+        flash('開始日は終了日より前の日付にしてください', 'error')
+        date_from = ''
+        date_to = ''
+    years = anas.get_years()
+    months = anas.get_months()
+    summary = anas.get_daily_summary(selected_year, selected_month, date_from, date_to)
+    return rt('analyze/day.html', years=years, selected_year=selected_year, months=months, selected_month=selected_month, date_from=date_from, date_to=date_to, summary=summary)
+
+@app.route('/analysis/place')
+def analysis_place():
+    date_from = request.args.get('date_from')
+    date_to = request.args.get('date_to')
+    if not anas.validate_date_range(date_from, date_to):
+        flash('開始日は終了日より前の日付にしてください', 'error')
+        date_from = ''
+        date_to = ''
+    summary = anas.get_place_summary(date_from, date_to)
+    return rt('analyze/place.html', summary=summary, date_from=date_from, date_to=date_to)
+
+@app.route('/analysis/category')
+def analysis_category():
+    date_from = request.args.get('date_from')
+    date_to = request.args.get('date_to')
+    if not anas.validate_date_range(date_from, date_to):
+        flash('開始日は終了日より前の日付にしてください', 'error')
+        date_from = ''
+        date_to = ''
+    summary = anas.get_category_summary(date_from, date_to)
+    return rt('analyze/category.html', summary=summary, date_from=date_from, date_to=date_to)
+
+#場所
 @app.route('/places')
 def place_master():
-    return rt('places/list.html', places = ps.get_places())
+    keyword = request.args.get('keyword', '')
+    category_id = request.args.get('category_id')
+    places = ps.get_places(keyword, category_id)
+    return rt('places/list.html', keyword=keyword, category_id=category_id, places=places, categories=cs.get_categories())
 
 @app.route('/places/add', methods=['GET','POST'])
 @app.route('/places/<int:id>/edit', methods=['GET','POST'])
@@ -97,6 +183,7 @@ def place_delete(id):
         flash('場所を削除しました', 'success')
     return redirect(url_for('place_master'))
 
+#カテゴリ
 @app.route('/categories')
 def category_master():
     return rt('categories/list.html', categories = cs.get_categories())
