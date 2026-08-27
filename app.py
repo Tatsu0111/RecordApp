@@ -3,6 +3,7 @@ import services.record_service as rs
 import services.place_service as ps
 import services.category_service as cs
 import services.analysis_service as anas
+import services.graph_service as gs
 from models import Record, Place, Category
 from datetime import datetime
 from forms import RecordForm, PlaceForm, CategoryForm
@@ -93,14 +94,18 @@ def analysis_lifetime():
 @app.route('/analysis/year')
 def analysis_year():
     summary = anas.get_yearly_summary()
-    return rt('analyze/year.html', summary=summary)
+    fig = gs.create_yearly_graph(summary)
+    graph = fig.to_html(full_html=False)
+    return rt('analyze/year.html', summary=summary, graph=graph)
 
 @app.route('/analysis/month')
 def analysis_month():
     selected_year = request.args.get('year', '')
     years = anas.get_years()
     summary = anas.get_monthly_summary(selected_year)
-    return rt('analyze/month.html', years=years, selected_year=selected_year, summary=summary)
+    fig = gs.create_monthly_graph(summary)
+    graph = fig.to_html(full_html=False)
+    return rt('analyze/month.html', years=years, selected_year=selected_year, summary=summary, graph=graph)
 
 @app.route('/analysis/day')
 def analysis_day():
@@ -115,7 +120,9 @@ def analysis_day():
     years = anas.get_years()
     months = anas.get_months()
     summary = anas.get_daily_summary(selected_year, selected_month, date_from, date_to)
-    return rt('analyze/day.html', years=years, selected_year=selected_year, months=months, selected_month=selected_month, date_from=date_from, date_to=date_to, summary=summary)
+    fig = gs.create_daily_graph(summary)
+    graph = fig.to_html(full_html=False)
+    return rt('analyze/day.html', years=years, selected_year=selected_year, months=months, selected_month=selected_month, date_from=date_from, date_to=date_to, summary=summary, graph=graph)
 
 @app.route('/analysis/place')
 def analysis_place():
@@ -126,7 +133,9 @@ def analysis_place():
         date_from = ''
         date_to = ''
     summary = anas.get_place_summary(date_from, date_to)
-    return rt('analyze/place.html', summary=summary, date_from=date_from, date_to=date_to)
+    fig = gs.create_place_graph(summary)
+    graph = fig.to_html(full_html=False)
+    return rt('analyze/place.html', summary=summary, date_from=date_from, date_to=date_to, graph=graph)
 
 @app.route('/analysis/category')
 def analysis_category():
@@ -137,7 +146,9 @@ def analysis_category():
         date_from = ''
         date_to = ''
     summary = anas.get_category_summary(date_from, date_to)
-    return rt('analyze/category.html', summary=summary, date_from=date_from, date_to=date_to)
+    fig = gs.create_category_graph(summary)
+    graph = fig.to_html(full_html=False)
+    return rt('analyze/category.html', summary=summary, date_from=date_from, date_to=date_to, graph=graph)
 
 #場所
 @app.route('/places')
