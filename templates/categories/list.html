@@ -2,6 +2,9 @@
 {%block title%}収支管理 | カテゴリ一覧{%endblock%}
 {%block header%}<h1>カテゴリ一覧</h1>{%endblock%}
 {%block content%}
+    <form action="/categories/add" method="get">
+        <button type="submit">カテゴリを登録する</button>
+    </form>
     <table border="1">
         <thead>
             <tr><th>ID</th><th>名前</th></tr>
@@ -29,4 +32,7 @@
     <form action="/categories/add" method="get">
         <button type="submit">カテゴリを登録する</button>
     </form>
+{%endblock%}
+{%block breadcrumb%}
+    <a href="{{url_for('index')}}">TOP</a> &gt;カテゴリ管理
 {%endblock%}

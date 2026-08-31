@@ -20,6 +20,9 @@
     </div>
 </form>
 {%endblock%}
+{% block breadcrumb %}
+    <a href="{{ url_for('index') }}">TOP</a> &gt; <a href="{{ url_for('category_master') }}">カテゴリ管理</a> &gt; {{ "カテゴリ登録" if not row else "カテゴリ修正" }}
+{% endblock %}
 {%block footer%}
 <a href="{{url_for('category_master')}}">一覧に戻る</a>
 <br>

@@ -3,8 +3,17 @@
 <head>
     <meta charset="UTF-8" />
     <title>{%block title%}タイトル{%endblock%}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+    <nav class="navbar">
+        <a href="{{ url_for('index') }}" class="nav-logo">収支管理アプリ</a>
+        <a href="{{ url_for('index') }}" class="nav-link">TOP</a>
+        <a href="{{ url_for('show_records') }}" class="nav-link">収支一覧</a>
+        <a href="{{ url_for('record_analyze') }}" class="nav-link">収支分析</a>
+        <a href="{{ url_for('place_master') }}" class="nav-link">店舗・開催場管理</a>
+        <a href="{{ url_for('category_master') }}" class="nav-link">カテゴリ管理</a>
+    </nav>
     {%block header%}ヘッダー{%endblock%}
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -14,7 +23,20 @@
         {% endif %}
     {% endwith %}
     {%block content%}内容{%endblock%}
-    <hr>
-    {%block footer%}<a href="{{url_for('index')}}">TOP画面へ</a>{%endblock%}
+    <br>
+    <div class="bottom-area">
+        <div class="breadcrumb">
+            {% block breadcrumb %}{% endblock %}
+        </div>
+        {%block footer%}
+        <footer class="footer">
+            <div class="footer-header">
+                <a href="{{ url_for('index') }}" class="footer-logo">収支管理アプリ</a>
+                <p class="footer-description">パチンコ・パチスロや競馬など各種ギャンブルの収支を記録・分析するためのアプリです。</p>
+            </div>
+            <p class="copyright">Copyright &copy; 2026 収支管理アプリ All Rights Reserved.</p>
+        </footer>
+        {%endblock%}
+    </div>
 </body>
 </html>

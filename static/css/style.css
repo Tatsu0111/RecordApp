@@ -1,0 +1,186 @@
+/* ベース */
+body {
+    background-color: lightyellow;
+}
+h1 {
+    background-color: rgb(212, 234, 241);
+    padding: 10px;
+    padding-left: 200px;
+    margin:0;
+}
+
+.bottom-area {
+    background-color: rgb(212, 234, 241);
+    min-height: 100vh;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    background-color: rgba(248, 248, 72, 0.801);
+}
+.navbar a {
+    text-decoration: none;
+    position: relative;
+    left: 30px;
+}
+.nav-logo , .footer-logo {
+    font-weight: bold;
+    font-size: 18px;
+    margin-right: 20px;
+}
+.nav-link {
+    padding: 10px 15px;
+}
+.nav-link:hover {
+    color: red;
+    background-color: lightgray;
+}
+
+.footer{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    gap: 1.5rem;
+}
+.footer-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-left: 30px;
+}
+.footer-logo {
+    font-weight: bold;
+    font-size: 18px;
+    margin-right: 20px;
+    text-decoration: none;
+}
+.footer p {
+    margin: 0;
+}
+.copyright {
+    font-size: 14px;
+    padding-left: 30px;
+}
+
+.breadcrumb {
+    padding: 10px;
+    padding-left: 30px;
+    font-size: 14px;
+    background-color: lightgray;
+}
+.breadcrumb a {
+    margin: 10px;
+}
+
+/* TOPページ */
+.top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin: 30px 0;
+}
+.top-box {
+    width: 220px;
+    padding: 15px;
+    text-align: center;
+    font-size: 30px;
+    border: 4px solid red;
+    border-radius: 15px;
+    background-color: #ffffe8;
+    animation: border-rainbow 3s linear infinite;
+}
+.top-box p {
+    margin: 10px 0;
+}
+@keyframes border-rainbow {
+    0% {border-color: red; box-shadow: 0 0 10px red;}
+    16% {border-color: orange; box-shadow: 0 0 10px orange;}
+    33% {border-color: yellow; box-shadow: 0 0 10px yellow;}
+    50% {border-color: lime; box-shadow: 0 0 10px lime;}
+    66% {border-color: cyan; box-shadow: 0 0 10px cyan;}
+    83% {border-color: blue; box-shadow: 0 0 10px blue;}
+    100% {border-color: violet; box-shadow: 0 0 10px violet;}
+}
+
+.hibiscus {
+    font-size: 100px;
+}
+.hibiscus-left {
+    animation: blink-left 1s steps(1) infinite;
+}
+.hibiscus-right {
+    animation: blink-right 1s steps(1) infinite;
+}
+@keyframes blink-left {
+    0%,
+    49% {opacity: 1;}
+    50%,
+    100% {opacity: 0.4;}
+}
+@keyframes blink-right {
+    0%,
+    49% {opacity: 0.4;}
+    50%,
+    100% {opacity: 1;}
+}
+.top a{
+    font-size: 20px;
+    padding: 10px;
+    text-decoration: none;
+}
+.top-menu {
+    width: fit-content;
+    margin: 30px auto;
+}
+.menu-item {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+.menu-item a {
+    width: 200px;
+    font-size: 20px;
+    text-align: center;
+}
+.menu-item p {
+    margin: 0;
+    width: 350px;
+}
+
+/* 分析ページ */
+.analysis-container {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+.summary-table {
+    flex: 1;
+}
+.summary-graph {
+    flex: 1;
+    border: 2px solid lightblue;
+    padding-right: 10px;
+}
+
+/* 表 */
+.positive {
+    color: blue;
+}
+.negative {
+    color: red;
+}
+.even{
+    color:black
+}
+
+.update{
+    background-color:lightgreen;
+}
+.delete{
+    background-color:lightcoral;
+}

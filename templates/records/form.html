@@ -62,8 +62,6 @@
     </div>
 </form>
 {% endblock %}
-{%block footer%}
-<a href="{{url_for('show_records')}}">一覧へ</a>
-<br>
-<a href="{{url_for('index')}}">TOP画面へ</a>
-{%endblock%}
+{% block breadcrumb %}
+<a href="{{ url_for('index') }}">TOP</a>&gt;<a href="{{ url_for('show_records') }}">収支一覧</a>&gt;{{ "収支登録" if not row else "収支修正" }}
+{% endblock %}

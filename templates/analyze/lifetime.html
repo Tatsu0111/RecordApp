@@ -8,17 +8,30 @@
     <input type="date" name="date_to" placeholder="yyyy/mm/dd" value="{{date_to}}">
     <button type="submit">絞り込み</button>
 </form>
-<table border="1">
-    <thead>
-        <tr><th>回数</th><th>勝数</th><th>負数</th><th>引分</th><th>勝率</th><th>投資</th><th>回収</th><th>収支</th></tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>{{summary.count}}</td><td>{{summary.win}}</td><td>{{summary.lose}}</td><td>{{summary.even}}</td><td>{{summary.win_rate}}</td>
-            <td>{{summary.investment}}</td><td>{{summary.payout}}</td><td>{{summary.profit}}</td>
-        </tr>
-    </tbody>
-</table>
+<div class="analysis-container">
+    <div class="summary-table">
+        <table border="1">
+            <thead>
+                <tr><th>回数</th><th>勝数</th><th>負数</th><th>引分</th><th>勝率</th><th>投資</th><th>回収</th><th>収支</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{summary.count}}</td><td>{{summary.win}}</td><td>{{summary.lose}}</td><td>{{summary.even}}</td><td>{{summary.win_rate}}</td>
+                    <td>{{summary.investment}}</td><td>{{summary.payout}}</td>
+                    <td class="{% if summary.profit > 0 %}positive{% elif summary.profit == 0 %}even{% else %}negative{% endif %}">
+                        {{ summary.profit }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="summary-graph">
+        {{graph|safe}}
+    </div>
+</div>
+{%endblock%}
+{%block breadcrumb%}
+    <a href="{{url_for('index')}}">TOP</a> &gt;<a href="{{url_for('record_analyze')}}">収支分析</a> &gt;生涯収支
 {%endblock%}
 {%block footer%}
 <a href="{{url_for('record_analyze')}}">収支分析に戻る</a>

@@ -89,7 +89,10 @@ def analysis_lifetime():
         date_from = ''
         date_to = ''
     summary = anas.get_lifetime_summary(date_from, date_to)
-    return rt('analyze/lifetime.html', summary=summary, date_from=date_from, date_to=date_to)
+    data = anas.get_lifetime_graph_data(date_from, date_to)
+    fig = gs.create_lifetime_graph(data)
+    graph = fig.to_html(full_html=False)
+    return rt('analyze/lifetime.html', summary=summary, date_from=date_from, date_to=date_to, graph=graph)
 
 @app.route('/analysis/year')
 def analysis_year():

@@ -27,6 +27,9 @@
     </div>
 </form>
 {% endblock %}
+{%block breadcrumb%}
+    <a href="{{ url_for('index') }}">TOP</a> &gt; <a href="{{ url_for('place_master') }}">店舗・開催場管理</a> &gt; {{ "店舗・開催場登録" if not row else "店舗・開催場修正" }}
+{%endblock%}
 {%block footer%}
 <a href="{{url_for('place_master')}}">一覧に戻る</a>
 <br>

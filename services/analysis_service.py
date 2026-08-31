@@ -77,6 +77,21 @@ def get_lifetime_summary(date_from=None, date_to=None):
     finally:
         session.close()
 
+def get_lifetime_graph_data(date_from=None, date_to=None):
+    session = Session()
+    try:
+        query = session.query(Record.date, func.sum(Record.payout - Record.investment).label('profit'))
+        if date_from:
+            date_from = datetime.strptime(date_from, '%Y-%m-%d').date()
+            query = query.filter(Record.date >= date_from)
+        if date_to:
+            date_to = datetime.strptime(date_to, '%Y-%m-%d').date()
+            query = query.filter(Record.date <= date_to)
+        result = query.group_by(Record.date).order_by(Record.date).all()
+        return [{'date': row.date.strftime('%Y-%m-%d'), 'profit': row.profit}for row in result]
+    finally:
+        session.close()
+
 def get_yearly_summary():
     session = Session()
     try:

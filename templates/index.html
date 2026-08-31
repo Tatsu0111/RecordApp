@@ -1,19 +1,39 @@
 {%extends "base.html"%}
 {%block title%}トップ{%endblock%}
-{%block header%}<h1><center>収支管理アプリ</center></h1>{%endblock%}
+{%block header%}<h1>収支管理アプリ</h1>{%endblock%}
 {%block content%}
-    <big><center>生涯収支</center></big>
-    <big><center>{{total}}</center></big>
-    <big><center>勝率</center></big>
-    <big><center>{{win}}%</center></big>
-    <a href="{{url_for('show_records')}}">収支を見る</a>
-    <br>
-    <a href="{{url_for('record_form')}}">収支登録</a>
-    <br>
-    <a href="{{url_for('record_analyze')}}">収支分析</a>
-    <br>
-    <a href="{{url_for('place_master')}}">店舗・開催場管理</a>
-    <br>
-    <a href="{{url_for('category_master')}}">カテゴリ管理</a>
+<div class="top">
+    <span class="hibiscus hibiscus-left">🌺</span>
+    <div class="top-box">
+        <p>生涯収支</p>
+        <p>{{total}}</p>
+    </div>
+    <div class="top-box">
+        <p>勝率</p>
+        <p>{{win}}%</p>
+    </div>
+    <span class="hibiscus hibiscus-right">🌺</span>
+</div>
+<div class="top-menu">
+    <div class="menu-item">
+        <a href="{{ url_for('show_records') }}">収支を見る</a>
+        <p>一件ごとの収支を見ることができます</p>
+    </div>
+    <div class="menu-item">
+        <a href="{{ url_for('record_form') }}">収支登録</a>
+        <p>収支を登録することができます</p>
+    </div>
+    <div class="menu-item">
+        <a href="{{ url_for('record_analyze') }}">収支分析</a>
+        <p>収支の推移を見ることができます</p>
+    </div>
+    <div class="menu-item">
+        <a href="{{ url_for('place_master') }}">店舗・開催場管理</a>
+        <p>店舗や開催場の登録・編集・削除ができます</p>
+    </div>
+    <div class="menu-item">
+        <a href="{{ url_for('category_master') }}">カテゴリ管理</a>
+        <p>カテゴリの登録・編集・削除ができます</p>
+    </div>
+</div>
 {%endblock%}
-{%block footer%}{%endblock%}

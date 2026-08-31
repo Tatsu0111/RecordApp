@@ -14,6 +14,9 @@
     </select>
     <button type="submit">検索</button>
 </form>
+<form action="/places/add" method="get">
+    <button type="submit">場所を登録する</button>
+</form>
     <table border="1">
         <thead>
             <tr><th>ID</th><th>名前</th><th>カテゴリ</th></tr>
@@ -41,4 +44,7 @@
     <form action="/places/add" method="get">
         <button type="submit">場所を登録する</button>
     </form>
+{%endblock%}
+{%block breadcrumb%}
+    <a href="{{ url_for('index') }}">TOP</a> &gt; 店舗・開催場管理
 {%endblock%}
