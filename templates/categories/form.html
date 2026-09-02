@@ -6,25 +6,25 @@
 <h1>カテゴリ{{ "登録" if not row else "修正" }}</h1>
 {%endblock%}
 {%block content%}
-<form method="post" novalidate>
-    {{ form.hidden_tag() }}
-    <div>
-        {{ form.name.label }}
-        {{ form.name() }}
-        {% for error in form.name.errors %}
-            <p class="error">{{ error }}</p>
-        {% endfor %}
-    </div>
-    <div>
-        {{ form.submit(value="登録" if not row else "修正") }}
-    </div>
-</form>
+<div class="add-area">
+    <form method="post" novalidate class="add-form">
+        {{ form.hidden_tag() }}
+        <div class="add-item">
+            <div class="label-area">
+                {{ form.name.label }}
+                <span class="required">必須</span>
+            </div>
+            {{ form.name() }}
+            {% for error in form.name.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <div class="add-button">
+            {{ form.submit(value="登録" if not row else "修正") }}
+        </div>
+    </form>
+</div>
 {%endblock%}
 {% block breadcrumb %}
     <a href="{{ url_for('index') }}">TOP</a> &gt; <a href="{{ url_for('category_master') }}">カテゴリ管理</a> &gt; {{ "カテゴリ登録" if not row else "カテゴリ修正" }}
 {% endblock %}
-{%block footer%}
-<a href="{{url_for('category_master')}}">一覧に戻る</a>
-<br>
-<a href="{{url_for('index')}}">TOP画面へ</a>
-{%endblock%}

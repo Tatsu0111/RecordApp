@@ -23,8 +23,8 @@ def show_records():
         'date_asc',
         'investment_desc',
         'investment_asc',
-        'payout_desc',
-        'payout_asc'
+        'profit_desc',
+        'profit_asc'
     ]
     sort = request.args.get('sort', 'date_desc')
     if sort not in allowed_sorts:
@@ -36,7 +36,7 @@ def show_records():
     date_to = request.args.get('date_to')
     memo_keyword = request.args.get('memo_keyword', '')
     if not anas.validate_date_range(date_from, date_to):
-        flash('開始日は終了日より前の日付にしてください', 'error')
+        flash('開始日は終了日より前の日付にしてください', 'fail')
         date_from = ''
         date_to = ''
     records = rs.get_records(sort,title_keyword,category_id,place_id,date_from,date_to,memo_keyword)
@@ -85,7 +85,7 @@ def analysis_lifetime():
     date_from = request.args.get('date_from')
     date_to = request.args.get('date_to')
     if not anas.validate_date_range(date_from, date_to):
-        flash('開始日は終了日より前の日付にしてください', 'error')
+        flash('開始日は終了日より前の日付にしてください', 'fail')
         date_from = ''
         date_to = ''
     summary = anas.get_lifetime_summary(date_from, date_to)
@@ -117,7 +117,7 @@ def analysis_day():
     date_from = request.args.get('date_from')
     date_to = request.args.get('date_to')
     if not anas.validate_date_range(date_from, date_to):
-        flash('開始日は終了日より前の日付にしてください', 'error')
+        flash('開始日は終了日より前の日付にしてください', 'fail')
         date_from = ''
         date_to = ''
     years = anas.get_years()
@@ -132,7 +132,7 @@ def analysis_place():
     date_from = request.args.get('date_from')
     date_to = request.args.get('date_to')
     if not anas.validate_date_range(date_from, date_to):
-        flash('開始日は終了日より前の日付にしてください', 'error')
+        flash('開始日は終了日より前の日付にしてください', 'fail')
         date_from = ''
         date_to = ''
     summary = anas.get_place_summary(date_from, date_to)
@@ -145,7 +145,7 @@ def analysis_category():
     date_from = request.args.get('date_from')
     date_to = request.args.get('date_to')
     if not anas.validate_date_range(date_from, date_to):
-        flash('開始日は終了日より前の日付にしてください', 'error')
+        flash('開始日は終了日より前の日付にしてください', 'fail')
         date_from = ''
         date_to = ''
     summary = anas.get_category_summary(date_from, date_to)
@@ -189,9 +189,9 @@ def place_form(id=None):
 @app.route('/places/<int:id>/delete', methods=['POST'])
 def place_delete(id):
     if id == 1:
-        flash('この項目は削除できません', 'error')
+        flash('この項目は削除できません', 'fail')
     elif ps.has_records(id):
-        flash('この場所は収支で使用されているため削除できません', 'error')
+        flash('この場所は収支で使用されているため削除できません', 'fail')
     else:
         ps.delete_place(id)
         flash('場所を削除しました', 'success')
@@ -228,11 +228,11 @@ def category_form(id=None):
 @app.route('/categories/<int:id>/delete', methods=['POST'])
 def category_delete(id):
     if id == 1:
-        flash('この項目は削除できません', 'error')
+        flash('この項目は削除できません', 'fail')
     elif cs.has_records(id):
-        flash('このカテゴリは収支で使用されているため削除できません', 'error')
+        flash('このカテゴリは収支で使用されているため削除できません', 'fail')
     elif cs.has_places(id):
-        flash('このカテゴリは場所で使用されているため削除できません', 'error')
+        flash('このカテゴリは場所で使用されているため削除できません', 'fail')
     else:
         cs.delete_category(id)
         flash('カテゴリを削除しました', 'success')

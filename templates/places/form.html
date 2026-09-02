@@ -6,32 +6,36 @@
 <h1>店舗・開催場{{ "登録" if not row else "修正" }}</h1>
 {%endblock%}
 {%block content%}
-<form method="post" novalidate>
-    {{ form.hidden_tag() }}
-    <div>
-        {{ form.name.label }}
-        {{ form.name() }}
-        {% for error in form.name.errors %}
-            <p class="error">{{ error }}</p>
-        {% endfor %}
-    </div>
-    <div>
-        {{ form.category_id.label }}
-        {{ form.category_id() }}
-        {% for error in form.category_id.errors %}
-            <p class="error">{{ error }}</p>
-        {% endfor %}
-    </div>
-    <div>
-        {{ form.submit(value="登録" if not row else "修正") }}
-    </div>
-</form>
+<div class="add-area">
+    <form method="post" novalidate class="add-form">
+        {{ form.hidden_tag() }}
+        <div class="add-item">
+            <div class="label-area">
+                {{ form.name.label }}
+                <span class="required">必須</span>
+            </div>
+            {{ form.name() }}
+            {% for error in form.name.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <div class="add-item">
+            <div class="label-area">
+                {{ form.category_id.label }}
+                <span class="required">必須</span>
+            </div>
+            {{ form.category_id() }}
+            {% for error in form.category_id.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <div class="add-button">
+            {{ form.submit(value="登録" if not row else "修正") }}
+        </div>
+    </form>
+</div>
 {% endblock %}
 {%block breadcrumb%}
-    <a href="{{ url_for('index') }}">TOP</a> &gt; <a href="{{ url_for('place_master') }}">店舗・開催場管理</a> &gt; {{ "店舗・開催場登録" if not row else "店舗・開催場修正" }}
-{%endblock%}
-{%block footer%}
-<a href="{{url_for('place_master')}}">一覧に戻る</a>
-<br>
-<a href="{{url_for('index')}}">TOP画面へ</a>
+    <a href="{{ url_for('index') }}">TOP</a> &gt; 
+    <a href="{{ url_for('place_master') }}">店舗・開催場管理</a> &gt; {{ "店舗・開催場登録" if not row else "店舗・開催場修正" }}
 {%endblock%}

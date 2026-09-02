@@ -2,17 +2,29 @@
 {%block title%}収支分析{%endblock%}
 {%block header%}<h1>収支分析</h1>{%endblock%}
 {%block content%}
-<a href="{{url_for('analysis_lifetime')}}">生涯収支</a>
-<br>
-<a href="{{url_for('analysis_year')}}">年別収支</a>
-<br>
-<a href="{{url_for('analysis_month')}}">月別収支</a>
-<br>
-<a href="{{url_for('analysis_day')}}">日別収支</a>
-<br>
-<a href="{{url_for('analysis_place')}}">店舗・開催場別収支</a>
-<br>
-<a href="{{url_for('analysis_category')}}">カテゴリ別収支</a>
+<div class="analyze-menu">
+    <div class="analyze-item">
+        <p>推移が知りたい項目を選択してください</p>
+    </div>
+    <div class="analyze-item">
+        <a href="{{url_for('analysis_lifetime')}}">生涯収支</a>
+    </div>
+    <div class="analyze-item">
+        <a href="{{url_for('analysis_year')}}">年別収支</a>
+    </div>
+    <div class="analyze-item">
+        <a href="{{url_for('analysis_month')}}">月別収支</a>
+    </div>
+    <div class="analyze-item">
+        <a href="{{url_for('analysis_day')}}">日別収支</a>
+    </div>
+    <div class="analyze-item">
+        <a href="{{url_for('analysis_place')}}">店舗・開催場別収支</a>
+    </div>
+    <div class="analyze-item">
+        <a href="{{url_for('analysis_category')}}">カテゴリ別収支</a>
+    </div>
+</div>
 {%endblock%}
 {%block breadcrumb%}
     <a href="{{ url_for('index') }}">TOP</a> &gt; 収支分析

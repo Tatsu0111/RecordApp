@@ -108,7 +108,7 @@ h1 {
 }
 
 .hibiscus {
-    font-size: 100px;
+    font-size: 200px;
 }
 .hibiscus-left {
     animation: blink-left 1s steps(1) infinite;
@@ -153,34 +153,263 @@ h1 {
 }
 
 /* 分析ページ */
+.analyze-menu {
+    width: 350px;
+    margin:0 auto;
+}
+.analyze-item {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+.analyze-item a {
+    width: 100%;
+    font-size: 20px;
+    text-align: center;
+}
+.analyze-item p {
+    width: 100%;
+    margin: 0;
+    text-align: center;
+}
+
+/* .filter-area{
+    gap:10px;
+    padding:10px;
+    padding-left:200px;
+    justify-content:center;
+    margin-bottom:20px;
+    border:2px solid red;
+}
+.filter-area form{
+    display:flex;
+    flex-direction:column;
+    width:30%;
+    border:2px solid red;
+} */
+
 .analysis-container {
     display: flex;
-    gap: 30px;
+    gap: 10px;
     align-items: flex-start;
+    padding-top:20px;
+}
+.summary-filter{
+    flex:1;
+}
+.summary-filter form{
+    display:flex;
+    flex-direction:column;
+    width:80%;
+    margin:0 auto;
+}
+.summary-filter label{
+    font-size:16px;
+}
+.summary-filter input, .summary-filter select{
+    font-size:16px;
+    margin-bottom:10px;
+}
+.summary-filter button{
+    width:60%;
+    margin:0 auto;
+    font-size:16px;
+    background-color: lightblue;
+    cursor: pointer;
+}
+.summary-filter button:hover{
+    background-color: blue;
+    color:white;
 }
 .summary-table {
-    flex: 1;
+    flex: 4;
 }
 .summary-graph {
-    flex: 1;
+    flex: 5;
     border: 2px solid lightblue;
     padding-right: 10px;
+}
+
+/* 一覧ページ */
+.table-container{
+    display: flex;
+    width: 100%;
+}
+.search-area {
+    width:35%;
+    padding: 20px;
+    padding-top: 0;
+    padding-left: 200px;
+    box-sizing: border-box;
+}
+.table-area {
+    width:65%;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-x: auto;
 }
 
 /* 表 */
 .positive {
     color: blue;
+    font-weight: bold;
 }
 .negative {
     color: red;
+    font-weight: bold;
 }
 .even{
-    color:black
+    color:black;
+    font-weight: bold;
+}
+table {
+    margin:auto;
+    align-items: center;
+    border-collapse: collapse;
+    border: 3px solid black;
+}
+th, td {
+    padding: 5px;
+    border: 2px solid gray;
 }
 
+.add-button {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+.add-button button {
+    font-size: 20px;
+    background-color: lightgreen;
+    cursor: pointer;
+}
+.add-button button:hover{
+    background-color: green;
+    color:white;
+}
 .update{
     background-color:lightgreen;
 }
+.update:hover{
+    background-color:green;
+    color:white;
+}
 .delete{
     background-color:lightcoral;
+}
+.delete:hover{
+    background-color:red;
+    color:white;
+}
+
+/* 検索欄 */
+.search-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.search-item {
+    width: 100%;
+    margin-bottom: 20px;
+}
+.search-item label {
+    display: block;
+    margin:0;
+}
+.search-item input, .search-item select {
+    width: 100%;
+    font-size:16px;
+    box-sizing: border-box;
+}
+.search-button {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.search-form button {
+    padding: 5px 10px;
+    font-size:16px;
+    background-color: lightblue;
+    cursor: pointer;
+}
+.search-form button:hover {
+    background-color: blue;
+    color: white;
+}
+
+/* 登録ページ */
+.add-area {
+    display: flex;
+    justify-content: center;
+}
+.add-form {
+    padding-top:20px;
+    display: flex;
+    flex-direction: column;
+    width:50%;
+}
+.add-item {
+    width:100%;
+    margin-bottom: 20px;
+}
+.add-item input, .add-item select, .add-item textarea{
+    display: block;
+    width: 50%;
+    font-size:18px;
+    margin:0 auto;
+    box-sizing: border-box;
+}
+.add-button input[type="submit"] {
+    font-size: 20px;
+    background-color: lightgreen;
+    cursor: pointer;
+}
+.add-button input[type="submit"]:hover {
+    background-color: green;
+    color: white;
+}
+.label-area {
+    width: 50%;
+    margin: 0 auto 5px;
+}
+.label-area label {
+    display: inline;
+    font-size:20px;
+    width:50%;
+    margin: 0 auto 5px;
+}
+.required {
+    margin-left: 8px;
+    padding: 2px 6px;
+    font-size: 12px;
+    background-color: red;
+    color: white;
+    border-radius: 4px;
+}
+.optional {
+    margin-left: 8px;
+    padding: 2px 6px;
+    font-size: 12px;
+    background-color: gray;
+    color: white;
+    border-radius: 4px;
+}
+.error{
+    color:red;
+    font-size:16px;
+    display:block;
+    width:50%;
+    margin:0 auto 5px;
+}
+.success{
+    color:green;
+    font-size:16px;
+    display:block;
+    padding-left:200px;
+}
+.fail{
+    color:red;
+    font-size:16px;
+    display:block;
+    padding-left:200px;
 }

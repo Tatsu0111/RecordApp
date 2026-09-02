@@ -6,61 +6,84 @@
 <h1>収支{{ "登録" if not row else "修正" }}</h1>
 {%endblock%}
 {% block content %}
-<form method="post" novalidate>
-    {{ form.hidden_tag() }}
-    <div>
-        {{ form.date.label }}
-        {{ form.date() }}
-        {% for error in form.date.errors %}
-            <p class="error">{{ error }}</p>
-        {% endfor %}
-    </div>
-    <div>
-        {{ form.title.label }}
-        {{ form.title() }}
-        {% for error in form.title.errors %}
-            <p class="error">{{ error }}</p>
-        {% endfor %}
-    </div>
-    <div>
-        {{ form.category_id.label }}
-        {{ form.category_id() }}
-        {% for error in form.category_id.errors %}
-            <p class="error">{{ error }}</p>
-        {% endfor %}
-    </div>
-    <div>
-        {{ form.place_id.label }}
-        {{ form.place_id() }}
-        {% for error in form.place_id.errors %}
-            <p class="error">{{ error }}</p>
-        {% endfor %}
-    </div>
-    <div>
-        {{ form.investment.label }}
-        {{ form.investment(step='1000') }}
-        {% for error in form.investment.errors %}
-            <p class="error">{{ error }}</p>
-        {% endfor %}
-    </div>
-    <div>
-        {{ form.payout.label }}
-        {{ form.payout(step='1000') }}
-        {% for error in form.payout.errors %}
-            <p class="error">{{ error }}</p>
-        {% endfor %}
-    </div>
-    <div>
-        {{ form.memo.label }}
-        {{ form.memo() }}
-        {% for error in form.memo.errors %}
-            <p class="error">{{ error }}</p>
-        {% endfor %}
-    </div>
-    <div>
-        {{ form.submit(value="登録" if not row else "修正") }}
-    </div>
-</form>
+<div class="add-area">
+    <form method="post" novalidate class="add-form">
+        {{ form.hidden_tag() }}
+        <div class="add-item">
+            <div class="label-area">
+                {{ form.date.label }}
+                <span class="required">必須</span>
+            </div>
+            {{ form.date() }}
+            {% for error in form.date.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <div class="add-item">
+            <div class="label-area">
+                {{ form.title.label }}
+                <span class="optional">任意</span>
+            </div>
+            {{ form.title() }}
+            {% for error in form.title.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <div class="add-item">
+            <div class="label-area">
+                {{ form.category_id.label }}
+                <span class="required">必須</span>
+            </div>
+            {{ form.category_id() }}
+            {% for error in form.category_id.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <div class="add-item">
+            <div class="label-area">
+                {{ form.place_id.label }}
+                <span class="required">必須</span>
+            </div>
+            {{ form.place_id() }}
+            {% for error in form.place_id.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <div class="add-item">
+            <div class="label-area">
+                {{ form.investment.label }}
+                <span class="required">必須</span>
+            </div>
+            {{ form.investment(step='1000') }}
+            {% for error in form.investment.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <div class="add-item">
+            <div class="label-area">
+                {{ form.payout.label }}
+                <span class="required">必須</span>
+            </div>
+            {{ form.payout(step='1000') }}
+            {% for error in form.payout.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <div class="add-item">
+            <div class="label-area">
+                {{ form.memo.label }}
+                <span class="optional">任意</span>
+            </div>
+            {{ form.memo() }}
+            {% for error in form.memo.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <div class="add-button">
+            {{ form.submit(value="登録" if not row else "修正") }}
+        </div>
+    </form>
+</div>
 {% endblock %}
 {% block breadcrumb %}
 <a href="{{ url_for('index') }}">TOP</a>&gt;<a href="{{ url_for('show_records') }}">収支一覧</a>&gt;{{ "収支登録" if not row else "収支修正" }}

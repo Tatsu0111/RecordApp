@@ -2,13 +2,15 @@
 {%block title%}収支分析 | 生涯収支{%endblock%}
 {%block header%}<h1>生涯収支</h1>{%endblock%}
 {%block content%}
-<form action="{{ url_for('analysis_lifetime') }}" method="get">
-    <label>期間(from-to)：</label>
-    <input type="date" name="date_from" placeholder="yyyy/mm/dd" value="{{date_from}}">
-    <input type="date" name="date_to" placeholder="yyyy/mm/dd" value="{{date_to}}">
-    <button type="submit">絞り込み</button>
-</form>
 <div class="analysis-container">
+    <div class="summary-filter">
+        <form action="{{ url_for('analysis_lifetime') }}" method="get">
+            <label>期間(from-to)</label>
+            <input type="date" name="date_from" placeholder="yyyy/mm/dd" value="{{date_from}}">
+            <input type="date" name="date_to" placeholder="yyyy/mm/dd" value="{{date_to}}">
+            <button type="submit">絞り込み</button>
+        </form>
+    </div>
     <div class="summary-table">
         <table border="1">
             <thead>
@@ -32,9 +34,4 @@
 {%endblock%}
 {%block breadcrumb%}
     <a href="{{url_for('index')}}">TOP</a> &gt;<a href="{{url_for('record_analyze')}}">収支分析</a> &gt;生涯収支
-{%endblock%}
-{%block footer%}
-<a href="{{url_for('record_analyze')}}">収支分析に戻る</a>
-<br>
-<a href="{{url_for('index')}}">TOP画面へ</a>
 {%endblock%}

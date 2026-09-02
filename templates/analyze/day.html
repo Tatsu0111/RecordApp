@@ -2,27 +2,29 @@
 {%block title%}収支分析 | 日別{%endblock%}
 {%block header%}<h1>日別収支</h1>{%endblock%}
 {%block content%}
-<form action="{{ url_for('analysis_day') }}" method="get">
-    <label>年を選択</label>
-    <select name="year" id="year">
-        <option value="">すべて</option>
-        {%for row in years%}
-        <option value="{{row}}" {% if selected_year == row %}selected{% endif %}>{{row}}</option>
-        {%endfor%}
-    </select>
-    <label>月を選択</label>
-    <select name="month" id="month">
-        <option value="">すべて</option>
-        {%for row in months%}
-        <option value="{{row}}" {% if selected_month == row %}selected{% endif %}>{{row}}</option>
-        {%endfor%}
-    </select>
-    <label>期間(from-to)：</label>
-    <input type="date" name="date_from" placeholder="yyyy/mm/dd" value="{{date_from}}">
-    <input type="date" name="date_to" placeholder="yyyy/mm/dd" value="{{date_to}}">
-    <button type="submit">絞り込み</button>
-</form>
 <div class="analysis-container">
+    <div class="summary-filter">
+        <form action="{{ url_for('analysis_day') }}" method="get">
+            <label>年を選択</label>
+            <select name="year" id="year">
+                <option value="">すべて</option>
+                {%for row in years%}
+                <option value="{{row}}" {% if selected_year == row %}selected{% endif %}>{{row}}</option>
+                {%endfor%}
+            </select>
+            <label>月を選択</label>
+            <select name="month" id="month">
+                <option value="">すべて</option>
+                {%for row in months%}
+                <option value="{{row}}" {% if selected_month == row %}selected{% endif %}>{{row}}</option>
+                {%endfor%}
+            </select>
+            <label>期間(from-to)</label>
+            <input type="date" name="date_from" placeholder="yyyy/mm/dd" value="{{date_from}}">
+            <input type="date" name="date_to" placeholder="yyyy/mm/dd" value="{{date_to}}">
+            <button type="submit">絞り込み</button>
+        </form>
+    </div>
     <div class="summary-table">
         <table border="1">
             <thead>
@@ -49,9 +51,4 @@
 {%endblock%}
 {%block breadcrumb%}
     <a href="{{url_for('index')}}">TOP</a> &gt;<a href="{{url_for('record_analyze')}}">収支分析</a> &gt;日別収支
-{%endblock%}
-{%block footer%}
-<a href="{{url_for('record_analyze')}}">収支分析に戻る</a>
-<br>
-<a href="{{url_for('index')}}">TOP画面へ</a>
 {%endblock%}

@@ -2,7 +2,7 @@
 {%block title%}収支管理 | カテゴリ一覧{%endblock%}
 {%block header%}<h1>カテゴリ一覧</h1>{%endblock%}
 {%block content%}
-    <form action="/categories/add" method="get">
+    <form action="/categories/add" method="get" class="add-button">
         <button type="submit">カテゴリを登録する</button>
     </form>
     <table border="1">
@@ -18,10 +18,10 @@
                         <form action="{{ url_for('category_form', id=category.id) }}"
                             method="get"
                             style="display:inline;">
-                            <button type="submit">修正</button>
+                            <button type="submit" class="update">修正</button>
                         </form>
                         <form action="{{ url_for('category_delete', id=category.id) }}" method="post" style="display:inline;">
-                            <button onclick="return confirm('削除しますか？')">削除</button>
+                            <button onclick="return confirm('削除しますか？')" class="delete">削除</button>
                         </form>
                     {%endif%}
                 </td>
@@ -29,9 +29,6 @@
             {%endfor%}
         </tbody>
     </table>
-    <form action="/categories/add" method="get">
-        <button type="submit">カテゴリを登録する</button>
-    </form>
 {%endblock%}
 {%block breadcrumb%}
     <a href="{{url_for('index')}}">TOP</a> &gt;カテゴリ管理
