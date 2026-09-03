@@ -1,7 +1,7 @@
 from models import Category,Record,Place
 from database import Session
 from sqlalchemy import func,case
-from services.record_service import calc_profit
+from services.record_service import calc_profit, calc_recoveryRate, calc_winRate
 from datetime import datetime
 
 def validate_date_range(date_from, date_to):
@@ -37,7 +37,8 @@ def make_summary(result, key_name):
     summary = []
     for row in result:
         profit = calc_profit(row.investment, row.payout)
-        win_rate = round(row.win / row.count * 100 if row.count > 0 else 0,1)
+        win_rate = calc_winRate(row.win, row.count)
+        recovery = calc_recoveryRate(row.investment, row.payout)
         summary.append({
             key_name: row[0],
             'count': row.count,
@@ -47,7 +48,8 @@ def make_summary(result, key_name):
             'win_rate': win_rate,
             'investment': row.investment,
             'payout': row.payout,
-            'profit': profit
+            'profit': profit,
+            'recovery': recovery
         })
     return summary
 
@@ -63,7 +65,8 @@ def get_lifetime_summary(date_from=None, date_to=None):
             query = query.filter(Record.date <= date_to)
         row = query.one()
         profit = calc_profit(row.investment, row.payout)
-        win_rate = round(row.win / row.count * 100 if row.count > 0 else 0,1)
+        win_rate = calc_winRate(row.win, row.count)
+        recovery = calc_recoveryRate(row.investment, row.payout)
         return {
             'count': row.count,
             'win': row.win,
@@ -72,7 +75,8 @@ def get_lifetime_summary(date_from=None, date_to=None):
             'win_rate': win_rate,
             'investment': row.investment,
             'payout': row.payout,
-            'profit': profit
+            'profit': profit,
+            'recovery': recovery
         }
     finally:
         session.close()

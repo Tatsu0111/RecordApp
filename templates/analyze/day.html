@@ -28,17 +28,24 @@
     <div class="summary-table">
         <table border="1">
             <thead>
-                <tr><th>日</th><th>回数</th><th>勝数</th><th>負数</th><th>引分</th><th>勝率</th><th>投資</th><th>回収</th><th>収支</th></tr>
+                <tr><th>日</th><th>回数</th><th>勝数</th><th>負数</th><th>引分</th>
+                    <th>勝率</th><th>投資</th><th>回収</th><th>収支</th><th>回収率</th></tr>
             </thead>
             <tbody>
                 {%for row in summary%}
                 <tr>
                     <td>{{row.ymd}}</td>
-                    <td>{{row.count}}</td><td>{{row.win}}</td><td>{{row.lose}}</td><td>{{row.even}}</td><td>{{row.win_rate}}</td>
+                    <td>{{row.count}}</td><td>{{row.win}}</td><td>{{row.lose}}</td><td>{{row.even}}</td>
+                    <td class="{% if row.win_rate > 50 %}positive{% elif row.win_rate == 50 %}even{% else %}negative{% endif %}">
+                        {{ row.win_rate }}
+                    </td>
                     <td>{{row.investment}}</td><td>{{row.payout}}</td>
                     <td class="{% if row.profit > 0 %}positive{% elif row.profit == 0 %}even{% else %}negative{% endif %}">
                         {{ row.profit }}
-                    </td>                    
+                    </td>
+                    <td class="{% if row.recovery > 100 %}positive{% elif row.recovery == 100 %}even{% else %}negative{% endif %}">
+                        {{ row.recovery }}
+                    </td>                   
                 </tr>
                 {%endfor%}
             </tbody>

@@ -4,6 +4,7 @@ import services.place_service as ps
 import services.category_service as cs
 import services.analysis_service as anas
 import services.graph_service as gs
+import services.uranai_service as us
 from models import Record, Place, Category
 from datetime import datetime
 from forms import RecordForm, PlaceForm, CategoryForm
@@ -13,7 +14,13 @@ app.config['SECRET_KEY'] = 'dev-secret-key-2026'
 
 @app.route('/')
 def index():
-    return rt('index.html',total = rs.get_totalProfit(),win=rs.get_winRate())
+    return rt('index.html',total = rs.get_totalProfit(),win=rs.get_winRate(),recovery=rs.get_recoveryRate(),monthly_top3=rs.get_monthly_top3())
+
+#占い
+@app.route('/uranai', methods=['GET','POST'])
+def uranai():
+    result = us.draw_fortune()
+    return rt('uranai/uranai.html',name=result[0],icon=result[1])
 
 #収支
 @app.route('/records')
@@ -24,7 +31,9 @@ def show_records():
         'investment_desc',
         'investment_asc',
         'profit_desc',
-        'profit_asc'
+        'profit_asc',
+        'recovery_desc',
+        'recovery_asc'
     ]
     sort = request.args.get('sort', 'date_desc')
     if sort not in allowed_sorts:

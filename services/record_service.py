@@ -1,11 +1,28 @@
 from models import Record
 from database import Session
 from datetime import datetime
+from zoneinfo import ZoneInfo
 from sqlalchemy import func
 from sqlalchemy.orm import joinedload
 
 def calc_profit(investment, payout):
     return payout - investment
+
+def calc_winRate(win, count):
+    if count == 0:
+        return 0.0
+    return round((win / count) * 100, 1)
+
+def calc_recoveryRate(investment, payout):
+    if investment == 0:
+        return 0.0
+    return round((payout / investment) * 100, 1)
+
+def get_recoveryRate():
+    records = get_records()
+    total_investment = sum(record.investment for record in records)
+    total_payout = sum(record.payout for record in records)
+    return calc_recoveryRate(total_investment, total_payout)
 
 def get_totalProfit():
     records = get_records()
@@ -22,7 +39,27 @@ def get_winRate():
         if calc_profit(record.investment,record.payout) > 0:
             count += 1
         all += 1
-    return round(count / all * 100,1)
+    return calc_winRate(count, all)
+
+def get_monthly_top3():
+    session = Session()
+    try:
+        now_jst = datetime.now(ZoneInfo('Asia/Tokyo'))
+        today = now_jst.date()
+        records = (session.query(Record).filter(func.strftime('%Y-%m', Record.date)== today.strftime('%Y-%m')).all())
+        summary = []
+        for record in records:
+            profit = calc_profit(record.investment, record.payout)
+            recovery_rate = calc_recoveryRate(record.investment, record.payout)
+            summary.append({
+                'title': record.title,
+                'recovery_rate': recovery_rate,
+                'profit': profit
+            })
+        summary.sort(key=lambda x: x['recovery_rate'],reverse=True)
+        return summary[:3]
+    finally:
+        session.close()
 
 def get_records(sort='date_desc', title_keyword=None, category_id=None, place_id=None, date_from=None, date_to=None, memo_keyword=None):
     session = Session()
@@ -60,10 +97,15 @@ def get_records(sort='date_desc', title_keyword=None, category_id=None, place_id
             query = query.order_by((Record.investment).asc())
         elif sort == 'investment_desc':
             query = query.order_by((Record.investment).desc())
+        elif sort == 'recovery_asc':
+            query = query.order_by((Record.payout / Record.investment * 100).asc())
+        elif sort == 'recovery_desc':
+            query = query.order_by((Record.payout / Record.investment * 100).desc())
         
         records = query.all()
         for record in records:
             record.profit = calc_profit(record.investment, record.payout)
+            record.recovery = calc_recoveryRate(record.investment, record.payout)
         return records
     finally:
         session.close()
