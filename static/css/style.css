@@ -264,6 +264,18 @@ h1 {
     font-size: 200px;
     line-height: 1;
 }
+.uranai-final form{
+    margin-top:50px;
+}
+.uranai-final button{
+    font-size:20px;
+    background-color: lightblue;
+    cursor: pointer;
+}
+.uranai-final button:hover{
+    background-color:blue;
+    color:white;
+}
 
 /* 分析ページ */
 .analyze-menu {
