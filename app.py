@@ -8,9 +8,13 @@ import services.uranai_service as us
 from models import Record, Place, Category
 from datetime import datetime
 from forms import RecordForm, PlaceForm, CategoryForm
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'dev-secret-key-2026'
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 
 @app.route('/')
 def index():
