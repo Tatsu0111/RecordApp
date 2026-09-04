@@ -10,11 +10,13 @@ from datetime import datetime
 from forms import RecordForm, PlaceForm, CategoryForm
 from dotenv import load_dotenv
 import os
+from database import Base, engine
 
 load_dotenv()
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
+Base.metadata.create_all(engine)
 
 @app.route('/')
 def index():
