@@ -8,7 +8,7 @@ class Base(DeclarativeBase):
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
 if DATABASE_URL:
-    engine = create_engine(DATABASE_URL)
+    engine = create_engine(DATABASE_URL.replace("postgresql://", "postgresql+psycopg://"))
 else:
     engine = create_engine("sqlite:///record.db")
 
