@@ -2,7 +2,7 @@ from models import Record
 from database import Session
 from datetime import datetime
 from zoneinfo import ZoneInfo
-from sqlalchemy import func
+from sqlalchemy import func,extract
 from sqlalchemy.orm import joinedload
 
 def calc_profit(investment, payout):
@@ -46,7 +46,7 @@ def get_monthly_top3(user_id):
     try:
         now_jst = datetime.now(ZoneInfo('Asia/Tokyo'))
         today = now_jst.date()
-        records = (session.query(Record).filter(func.strftime('%Y-%m', Record.date)== today.strftime('%Y-%m'),Record.user_id==user_id).all())
+        records = (session.query(Record).filter(extract('year', Record.date)==today.year,extract('month', Record.date)==today.month,Record.user_id==user_id).all())
         summary = []
         for record in records:
             profit = calc_profit(record.investment, record.payout)
