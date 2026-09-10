@@ -18,21 +18,21 @@ def calc_recoveryRate(investment, payout):
         return 0.0
     return round((payout / investment) * 100, 1)
 
-def get_recoveryRate():
-    records = get_records()
+def get_recoveryRate(user_id):
+    records = get_records(user_id)
     total_investment = sum(record.investment for record in records)
     total_payout = sum(record.payout for record in records)
     return calc_recoveryRate(total_investment, total_payout)
 
-def get_totalProfit():
-    records = get_records()
+def get_totalProfit(user_id):
+    records = get_records(user_id)
     total = 0
     for record in records:
         total += calc_profit(record.investment,record.payout)
     return total
 
-def get_winRate():
-    records = get_records()
+def get_winRate(user_id):
+    records = get_records(user_id)
     count = 0
     all = 0
     for record in records:
@@ -41,12 +41,12 @@ def get_winRate():
         all += 1
     return calc_winRate(count, all)
 
-def get_monthly_top3():
+def get_monthly_top3(user_id):
     session = Session()
     try:
         now_jst = datetime.now(ZoneInfo('Asia/Tokyo'))
         today = now_jst.date()
-        records = (session.query(Record).filter(func.strftime('%Y-%m', Record.date)== today.strftime('%Y-%m')).all())
+        records = (session.query(Record).filter(func.strftime('%Y-%m', Record.date)== today.strftime('%Y-%m'),Record.user_id==user_id).all())
         summary = []
         for record in records:
             profit = calc_profit(record.investment, record.payout)
@@ -61,10 +61,10 @@ def get_monthly_top3():
     finally:
         session.close()
 
-def get_records(sort='date_desc', title_keyword=None, category_id=None, place_id=None, date_from=None, date_to=None, memo_keyword=None):
+def get_records(user_id, sort='date_desc', title_keyword=None, category_id=None, place_id=None, date_from=None, date_to=None, memo_keyword=None):
     session = Session()
     try:
-        query = session.query(Record).options(joinedload(Record.category),joinedload(Record.place))
+        query = session.query(Record).options(joinedload(Record.category),joinedload(Record.place)).filter(Record.user_id == user_id)
         if title_keyword:
             query = query.filter(Record.title.like(f'%{title_keyword}%'))
             
@@ -110,10 +110,10 @@ def get_records(sort='date_desc', title_keyword=None, category_id=None, place_id
     finally:
         session.close()
 
-def get_record(id):
+def get_record(user_id, id):
     session = Session()
     try:
-        return session.query(Record).filter(Record.id == id).first()
+        return session.query(Record).filter(Record.id == id,Record.user_id==user_id).first()
     finally:
         session.close()
 
@@ -125,20 +125,20 @@ def insert_record(record):
     finally:
         session.close()
     
-def update_record(id,data):
+def update_record(user_id, id, data):
     session = Session()
     try:
-        record = session.query(Record).filter(Record.id == id).first()
+        record = session.query(Record).filter(Record.id == id,Record.user_id == user_id).first()
         for key, value in data.items():
             setattr(record, key, value)
         session.commit()
     finally:
         session.close()
         
-def delete_record(id):
+def delete_record(user_id, id):
     session = Session()
     try:
-        record = session.query(Record).filter(Record.id == id).first()
+        record = session.query(Record).filter(Record.id == id,Record.user_id == user_id).first()
         if record is None:
             return False
         session.delete(record)

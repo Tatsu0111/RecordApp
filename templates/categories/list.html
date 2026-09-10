@@ -7,14 +7,14 @@
     </form>
     <table border="1">
         <thead>
-            <tr><th>ID</th><th>名前</th></tr>
+            <tr><th>名前</th></tr>
         </thead>
         <tbody>
             {%for category in categories%}
             <tr>
-                <td>{{category.id}}</td><td>{{category.name}}</td>
+                <td>{{category.name}}</td>
                 <td>
-                    {% if category.id != 1 %}
+                    {% if category.name != "未登録" %}
                         <form action="{{ url_for('category_form', id=category.id) }}"
                             method="get"
                             style="display:inline;">

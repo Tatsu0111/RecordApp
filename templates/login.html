@@ -1,0 +1,33 @@
+{%extends "auth.html"%}
+{%block title%}ユーザー認証 | ログイン{%endblock%}
+{%block header%}<h1>ログイン</h1>{%endblock%}
+{%block content%}
+<div class="add-area">
+    <form method="post" novalidate class="add-form">
+        {{ form.hidden_tag() }}
+        <div class="add-item">
+            <div class="label-area">
+                {{ form.name.label }}
+                <span class="required">必須</span>
+            </div>
+            {{ form.name() }}
+            {% for error in form.name.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <div class="add-item">
+            <div class="label-area">
+                {{ form.password.label }}
+                <span class="required">必須</span>
+            </div>
+            {{ form.password() }}
+            {% for error in form.password.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <div class="add-button">
+            {{ form.submit(value="ログイン") }}
+        </div>
+    </form>
+</div>
+{%endblock%}

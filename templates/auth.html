@@ -2,20 +2,11 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8" />
-    <title>{%block title%}タイトル{%endblock%}</title>
+    <title>{%block title%}ユーザー認証{%endblock%}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <nav class="navbar">
-        <a href="{{ url_for('index') }}" class="nav-logo">収支管理アプリ</a>
-        <a href="{{ url_for('index') }}" class="nav-link">TOP</a>
-        <a href="{{ url_for('show_records') }}" class="nav-link">収支一覧</a>
-        <a href="{{ url_for('record_analyze') }}" class="nav-link">収支分析</a>
-        <a href="{{ url_for('place_master') }}" class="nav-link">店舗・開催場管理</a>
-        <a href="{{ url_for('category_master') }}" class="nav-link">カテゴリ管理</a>
-        <a href="{{ url_for('logout') }}" class="logout">ログアウト</a>
-    </nav>
-    {%block header%}ヘッダー{%endblock%}
+    {%block header%}<h1>収支管理アプリへようこそ</h1>{%endblock%}
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
@@ -23,12 +14,18 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
-    {%block content%}内容{%endblock%}
+    {%block content%}
+    <div class="auth-menu">
+        <div class="auth-item">
+            <a href="{{ url_for('register') }}">新規登録</a>
+        </div>
+        <div class="auth-item">
+            <a href="{{ url_for('login') }}">ログイン</a>
+        </div>
+    </div>
+    {%endblock%}
     <br>
     <div class="bottom-area">
-        <div class="breadcrumb">
-            {% block breadcrumb %}{% endblock %}
-        </div>
         {%block footer%}
         <footer class="footer">
             <div class="footer-header">

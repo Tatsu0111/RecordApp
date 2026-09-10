@@ -1,7 +1,12 @@
 from flask_wtf import FlaskForm
-from wtforms.fields import(StringField,IntegerField,DateField,SelectField,TextAreaField,SubmitField)
-from wtforms.validators import(DataRequired,InputRequired,NumberRange,Optional,Length)
+from wtforms.fields import(StringField,IntegerField,DateField,SelectField,TextAreaField,SubmitField,PasswordField)
+from wtforms.validators import(DataRequired,InputRequired,NumberRange,Optional,Length,Regexp)
 from validators import multiple_of_10, not_future, unique_place_name, unique_category_name
+
+class UserForm(FlaskForm):
+    name = StringField('アカウント名', validators=[DataRequired('アカウント名を入力してください'),Length(max=20, message='20文字以内で入力してください')],render_kw={"placeholder":"(例)山田太郎"})
+    password = PasswordField('パスワード', validators=[DataRequired('パスワードを入力してください'),Length(min=8, max=20, message='8~20文字で入力してください'),Regexp(r'^[a-zA-Z0-9]+$',message='パスワードは英数字のみ使用できます')],render_kw={"placeholder": "(例)abcd1234"})
+    submit = SubmitField('登録')
 
 class RecordForm(FlaskForm):
     date = DateField('日付', validators=[DataRequired('日付を入力してください'),not_future],format="%Y-%m-%d",render_kw={"placeholder":"yyyy/mm/dd"})

@@ -39,6 +39,15 @@ h1 {
     color: red;
     background-color: lightgray;
 }
+.logout{
+    padding: 10px 15px;
+    font-weight: bold;
+    color:red;
+}
+.logout:hover {
+    color: black;
+    background-color: lightgray;
+}
 
 .footer{
     display: flex;
@@ -74,6 +83,22 @@ h1 {
 }
 .breadcrumb a {
     margin: 10px;
+}
+
+/* 認証ページ */
+.auth-menu {
+    width: 350px;
+    margin:0 auto;
+}
+.auth-item {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0;
+}
+.auth-item a {
+    width: 100%;
+    font-size: 40px;
+    text-align: center;
 }
 
 /* TOPページ */

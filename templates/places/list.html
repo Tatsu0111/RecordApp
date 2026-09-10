@@ -32,14 +32,14 @@
         </div>
         <table border="1">
             <thead>
-                <tr><th>ID</th><th>名前</th><th>カテゴリ</th></tr>
+                <tr><th>名前</th><th>カテゴリ</th></tr>
             </thead>
             <tbody>
                 {%for place in places%}
                 <tr>
-                    <td>{{place.id}}</td><td>{{place.name}}</td><td>{{place.category.name}}</td>
+                    <td>{{place.name}}</td><td>{{place.category.name}}</td>
                     <td>
-                        {% if place.id != 1 %}
+                        {% if place.name != "未登録" %}
                             <form action="{{ url_for('place_form', id=place.id) }}"
                                 method="get"
                                 style="display:inline;">

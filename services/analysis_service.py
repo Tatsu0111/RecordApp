@@ -9,17 +9,17 @@ def validate_date_range(date_from, date_to):
         return False
     return True
 
-def get_years():
+def get_years(user_id):
     session = Session()
     try:
-        return [row[0] for row in session.query(func.strftime('%Y', Record.date)).distinct().order_by(func.strftime('%Y', Record.date).desc()).all()]
+        return [row[0] for row in session.query(func.strftime('%Y', Record.date)).filter(Record.user_id==user_id).distinct().order_by(func.strftime('%Y', Record.date).desc()).all()]
     finally:
         session.close()
 
-def get_months():
+def get_months(user_id):
     session = Session()
     try:
-        return [row[0] for row in session.query(func.strftime('%m', Record.date)).distinct().order_by(func.strftime('%m', Record.date).desc()).all()]
+        return [row[0] for row in session.query(func.strftime('%m', Record.date)).filter(Record.user_id==user_id).distinct().order_by(func.strftime('%m', Record.date).desc()).all()]
     finally:
         session.close()
 
@@ -53,10 +53,10 @@ def make_summary(result, key_name):
         })
     return summary
 
-def get_lifetime_summary(date_from=None, date_to=None):
+def get_lifetime_summary(user_id, date_from=None, date_to=None):
     session = Session()
     try:
-        query = session.query(*get_summary_columns())
+        query = session.query(*get_summary_columns()).filter(Record.user_id==user_id)
         if date_from:
             date_from = datetime.strptime(date_from, '%Y-%m-%d').date()
             query = query.filter(Record.date >= date_from)
@@ -81,10 +81,10 @@ def get_lifetime_summary(date_from=None, date_to=None):
     finally:
         session.close()
 
-def get_lifetime_graph_data(date_from=None, date_to=None):
+def get_lifetime_graph_data(user_id, date_from=None, date_to=None):
     session = Session()
     try:
-        query = session.query(Record.date, func.sum(Record.payout - Record.investment).label('profit'))
+        query = session.query(Record.date, func.sum(Record.payout - Record.investment).label('profit')).filter(Record.user_id==user_id)
         if date_from:
             date_from = datetime.strptime(date_from, '%Y-%m-%d').date()
             query = query.filter(Record.date >= date_from)
@@ -96,20 +96,20 @@ def get_lifetime_graph_data(date_from=None, date_to=None):
     finally:
         session.close()
 
-def get_yearly_summary():
+def get_yearly_summary(user_id):
     session = Session()
     try:
         year = func.strftime('%Y', Record.date)
-        result = session.query(year, *get_summary_columns()).group_by(year).all()
+        result = session.query(year, *get_summary_columns()).filter(Record.user_id==user_id).group_by(year).all()
         return make_summary(result, 'year')
     finally:
         session.close()
     
-def get_monthly_summary(year=None):
+def get_monthly_summary(user_id, year=None):
     session = Session()
     try:
         ym = func.strftime('%Y-%m', Record.date)
-        query = session.query(ym, *get_summary_columns())
+        query = session.query(ym, *get_summary_columns()).filter(Record.user_id==user_id)
         if year:
             query = query.filter(func.strftime('%Y', Record.date) == year)
         result = query.group_by(ym).all()
@@ -117,11 +117,11 @@ def get_monthly_summary(year=None):
     finally:
         session.close()
         
-def get_daily_summary(year=None, month=None, date_from=None, date_to=None):
+def get_daily_summary(user_id, year=None, month=None, date_from=None, date_to=None):
     session = Session()
     try:
         ymd = func.strftime('%Y-%m-%d', Record.date)
-        query = session.query(ymd, *get_summary_columns())
+        query = session.query(ymd, *get_summary_columns()).filter(Record.user_id==user_id)
         if year:
             query = query.filter(func.strftime('%Y', Record.date) == year)
         if month:
@@ -139,10 +139,10 @@ def get_daily_summary(year=None, month=None, date_from=None, date_to=None):
     finally:
         session.close()
     
-def get_place_summary(date_from=None, date_to=None):
+def get_place_summary(user_id, date_from=None, date_to=None):
     session = Session()
     try:
-        query = session.query(Place.name, *get_summary_columns()).join(Place, Record.place_id == Place.id)
+        query = session.query(Place.name, *get_summary_columns()).join(Place, Record.place_id == Place.id).filter(Record.user_id==user_id)
         if date_from:
             date_from = datetime.strptime(date_from, '%Y-%m-%d').date()
             query = query.filter(Record.date >= date_from)            
@@ -154,10 +154,10 @@ def get_place_summary(date_from=None, date_to=None):
     finally:
         session.close()
     
-def get_category_summary(date_from=None, date_to=None):
+def get_category_summary(user_id, date_from=None, date_to=None):
     session = Session()
     try:
-        query = session.query(Category.name, *get_summary_columns()).join(Category, Record.category_id == Category.id)
+        query = session.query(Category.name, *get_summary_columns()).join(Category, Record.category_id == Category.id).filter(Record.user_id==user_id)
         if date_from:
             date_from = datetime.strptime(date_from, '%Y-%m-%d').date()
             query = query.filter(Record.date >= date_from)            

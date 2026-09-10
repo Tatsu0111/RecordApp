@@ -2,14 +2,14 @@ from models import Place,Record
 from database import Session
 from sqlalchemy.orm import joinedload
 
-def has_records(place_id):
+def has_records(user_id,place_id):
     session = Session()
     try:
-        return session.query(Record).filter_by(place_id=place_id).first() is not None
+        return session.query(Record).filter(Record.place_id==place_id,Record.user_id==user_id).first() is not None
     finally:
         session.close()
         
-def get_places(keyword=None, category_id=None):
+def get_places(user_id, keyword=None, category_id=None):
     session = Session()
     try:
         query = session.query(Place).options(joinedload(Place.category))
@@ -17,21 +17,21 @@ def get_places(keyword=None, category_id=None):
             query = query.filter(Place.name.like(f'%{keyword}%'))
         if category_id:
             query = query.filter(Place.category_id == int(category_id))
-        return query.all()
+        return query.filter(Place.user_id==user_id).order_by(Place.id.asc()).all()
     finally:
         session.close()
 
-def get_place(id):
+def get_place(user_id,id):
     session = Session()
     try:
-        return session.query(Place).filter(Place.id == id).first()
+        return session.query(Place).filter(Place.id == id,Place.user_id == user_id).first()
     finally:
         session.close()
         
-def get_place_by_name(name):
+def get_place_by_name(user_id,name):
     session = Session()
     try:
-        return session.query(Place).filter_by(name=name).first()
+        return session.query(Place).filter(Place.name==name,Place.user_id==user_id).first()
     finally:
         session.close()
 
@@ -43,24 +43,26 @@ def insert_place(place):
     finally:
         session.close()
     
-def update_place(id,data):
-    if id == 1:
-        return
+def update_place(user_id,id,data):
     session = Session()
     try:
-        place = session.query(Place).filter(Place.id == id).first()
+        place = session.query(Place).filter(Place.id == id,Place.user_id==user_id).first()
+        if place is None or place.name == '未登録':
+            return        
         for key, value in data.items():
             setattr(place, key, value)
         session.commit()
     finally:
         session.close()
         
-def delete_place(id):
+def delete_place(user_id,id):
     if id == 1:
         return
     session = Session()
     try:
-        place = session.query(Place).filter(Place.id == id).first()
+        place = session.query(Place).filter(Place.id == id,Place.user_id==user_id).first()
+        if place is None or place.name == '未登録':
+            return
         if place is None:
             return False
         session.delete(place)
