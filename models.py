@@ -33,8 +33,8 @@ class Record(Base):
     category = relationship('Category',back_populates='records')
     place = relationship('Place',back_populates='records')
     __table_args__ = (
-        check('investment % 10 == 0'),
-        check('payout % 10 == 0'),
+        check('investment % 10 = 0'),
+        check('payout % 10 = 0'),
     )
 
 class Category(Base):
