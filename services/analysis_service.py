@@ -159,7 +159,7 @@ def get_place_summary(user_id, date_from=None, date_to=None):
         if date_to:
             date_to = datetime.strptime(date_to, '%Y-%m-%d').date()
             query = query.filter(Record.date <= date_to)
-        result = query.group_by(Record.place_id).all()
+        result = query.group_by(Record.place_id, Place.name).all()
         return make_summary(result, 'place')
     finally:
         session.close()
@@ -174,7 +174,7 @@ def get_category_summary(user_id, date_from=None, date_to=None):
         if date_to:
             date_to = datetime.strptime(date_to, '%Y-%m-%d').date()
             query = query.filter(Record.date <= date_to)
-        result = query.group_by(Record.category_id).all()
+        result = query.group_by(Record.category_id, Category.name).all()
         return make_summary(result, 'category')
     finally:
         session.close()
