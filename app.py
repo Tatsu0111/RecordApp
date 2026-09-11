@@ -114,6 +114,8 @@ def record_form(id=None):
         return redirect(url_for('auth'))
     user_id = session["user_id"]
     row = None if id is None else rs.get_record(user_id,id)
+    if id is not None and row is None:
+        return rt('errors/404.html'),404
     form = RecordForm(obj=row)
     form.category_id.choices = [(c.id, c.name)for c in cs.get_categories(user_id)]
     form.place_id.choices = [(p.id, p.name)for p in ps.get_places(user_id)]
@@ -272,6 +274,8 @@ def place_form(id=None):
         return redirect(url_for('auth'))
     user_id = session["user_id"]
     row = None if id is None else ps.get_place(user_id,id)
+    if id is not None and row is None:
+        return rt('errors/404.html'),404
     form = PlaceForm(obj=row)
     form.category_id.choices = [(c.id, c.name)for c in cs.get_categories(user_id)]
     if form.validate_on_submit():
@@ -328,6 +332,8 @@ def category_form(id=None):
         return redirect(url_for('auth'))
     user_id = session["user_id"]
     row = None if id is None else cs.get_category(user_id,id)
+    if id is not None and row is None:
+        return rt('errors/404.html'),404
     form = CategoryForm(obj=row)
     if form.validate_on_submit():
         category = cs.get_category_by_name(user_id,form.name.data)
