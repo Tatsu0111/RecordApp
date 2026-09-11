@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <title>{%block title%}404 Not Found{%endblock%}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    {%block header%}<h1 class="error-header">404</h1>{%endblock%}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <p class="flash {{ category }}">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    {%block content%}
+    <div class="error-area">
+        <div class="error-item">
+            <p>ページが見つかりません</p>
+        </div>
+        <div class="error-item">
+            <p>お探しのページは存在しないか、移動した可能性があります</p>
+        </div>
+        <div class="error-item">
+            <a href="{{url_for('index')}}">TOPへ戻る</a>
+        </div>
+    </div>
+    {%endblock%}
+</body>
+</html>

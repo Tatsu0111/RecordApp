@@ -366,5 +366,14 @@ def category_delete(id):
         flash('カテゴリを削除しました', 'success')
     return redirect(url_for('category_master'))
 
+# エラー
+@app.errorhandler(404)
+def error404(error):
+    return rt('errors/404.html')
+
+@app.errorhandler(500)
+def error500(error):
+    return rt('errors/500.html'),500
+
 if __name__ == '__main__':
     app.run(debug=True)
