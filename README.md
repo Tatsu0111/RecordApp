@@ -89,12 +89,18 @@
 
 ## 機能
 ### ユーザー関連
+<img width="1695" height="289" alt="image" src="https://github.com/user-attachments/assets/ea800b9d-41ce-4080-8a8b-12d794e887cc" />
+
 - ユーザー登録機能
 
 → ユーザー名・パスワードを登録
+<img width="1721" height="291" alt="スクリーンショット 2026-09-16 173403" src="https://github.com/user-attachments/assets/7fbc4d6c-031e-4c8d-8b1b-27020c1591a2" />
+
 - ログイン機能
 
 → 登録したユーザーでログイン
+<img width="1695" height="289" alt="image" src="https://github.com/user-attachments/assets/29d46c6c-b930-4bb9-9f5e-4ad08e071528" />
+
 - ログアウト機能
 
 → ログイン状態を解除
@@ -103,9 +109,13 @@
 - 収支登録機能
 
 → パチンコ・スロット・競馬などの収支を登録
+<img width="1818" height="689" alt="image" src="https://github.com/user-attachments/assets/f8c46482-ac41-49ed-951d-1e5fa6a87e78" />
+
 - 収支一覧表示機能
 
 → 登録した収支を一覧表示
+<img width="1814" height="618" alt="image" src="https://github.com/user-attachments/assets/f858540d-cd8e-49b2-bf80-faf05801fdeb" />
+
 - 収支編集・削除機能
 
 → 登録済みの収支を編集・削除
@@ -115,19 +125,25 @@
 - 収支分析機能
 
 → 年・月・日・カテゴリ・店舗などの単位で収支を集計・可視化
+<img width="1868" height="765" alt="image" src="https://github.com/user-attachments/assets/afff9345-71e7-446d-9ee2-3c0539377999" />
 
 ### マスタ管理
 - カテゴリ管理機能
 
 → パチンコ・スロット・競馬などのカテゴリを登録・編集・削除
+<img width="1841" height="560" alt="image" src="https://github.com/user-attachments/assets/ca1ae85b-a8e2-49a4-8b5f-0091a0a04b01" />
+
 - 店舗管理機能
 
 → 店舗・開催場所を登録・編集・削除
+<img width="1705" height="680" alt="image" src="https://github.com/user-attachments/assets/10b34fac-455d-49c7-b2ec-174e3cf4e9c2" />
 
 ### その他
 おみくじ機能
 
 → その日の運勢を表示
+<img width="1802" height="657" alt="image" src="https://github.com/user-attachments/assets/3017175b-5078-4d89-87fb-2697acca2f9c" />
+
 ## 成果
 ### データベースの扱い
 - データベース設計の理解
