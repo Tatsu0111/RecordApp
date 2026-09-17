@@ -67,11 +67,8 @@ https://recordappweb.onrender.com/
 　本番環境でのデータ保存に使用
 
 ## データベース設計
-- records
-
-→ 収支記録を管理するテーブル
-
-　日付・タイトル・投資額・回収額・メモなどを保存
+ <img width="1463" height="402" alt="image" src="https://github.com/user-attachments/assets/9aff38f5-480a-443e-ba97-9e57dcabb83f" />
+ 
 - users
 
 → ユーザー情報を管理するテーブル
@@ -87,6 +84,11 @@ https://recordappweb.onrender.com/
 → 店舗・開催場所などを管理するテーブル
 
 　収支記録に紐づく場所情報を保存
+- records
+
+→ 収支記録を管理するテーブル
+
+　日付・タイトル・投資額・回収額・メモなどを保存
 
 ## 機能
 ### ユーザー関連
