@@ -70,8 +70,10 @@ https://recordappweb.onrender.com/
 　本番環境でのデータ保存に使用
 
 ## データベース設計
+### E-R図
  <img width="1463" height="402" alt="image" src="https://github.com/user-attachments/assets/9aff38f5-480a-443e-ba97-9e57dcabb83f" />
- 
+
+### 各テーブルについて
 - users
 
 → ユーザー情報を管理するテーブル
@@ -94,43 +96,46 @@ https://recordappweb.onrender.com/
 　日付・タイトル・投資額・回収額・メモなどを保存
 
 ## 機能
+### システム構成図
+<img width="1244" height="571" alt="image" src="https://github.com/user-attachments/assets/b2a694d9-6b91-48b4-8b01-4c9dce5af4ae" />
+
 ### ユーザー関連
 <img width="1695" height="289" alt="image" src="https://github.com/user-attachments/assets/ea800b9d-41ce-4080-8a8b-12d794e887cc" />
 
 - ユーザー登録機能
 
-→ ユーザー名・パスワードを登録(パスワードはハッシュ化してDBに保存)
+→ ユーザー名・パスワードをDBに登録(パスワードはハッシュ化してDBに保存)
 <img width="1721" height="291" alt="スクリーンショット 2026-09-16 173403" src="https://github.com/user-attachments/assets/7fbc4d6c-031e-4c8d-8b1b-27020c1591a2" />
 
 - ログイン機能
 
-→ 登録したユーザーでログイン
+→ 入力情報とDB情報を照合し、登録されているユーザーならログイン状態に遷移
 <img width="1695" height="289" alt="image" src="https://github.com/user-attachments/assets/29d46c6c-b930-4bb9-9f5e-4ad08e071528" />
 
 - ログアウト機能
 
-→ ログイン状態を解除
+→ ログイン情報をpopしてログイン解除し、初期画面へ遷移
 
 ### 収支関連
 - 収支登録機能
 
-→ パチンコ・スロット・競馬などの収支を登録
+→ パチンコ・スロット・競馬などの収支をDBに登録
 <img width="1818" height="689" alt="image" src="https://github.com/user-attachments/assets/f8c46482-ac41-49ed-951d-1e5fa6a87e78" />
 
 - 収支一覧表示機能
 
-→ 登録した収支を一覧表示
+→ 登録した収支をDBから取得し、全件一覧表示
 <img width="1814" height="618" alt="image" src="https://github.com/user-attachments/assets/f858540d-cd8e-49b2-bf80-faf05801fdeb" />
 
 - 収支編集・削除機能
 
-→ 登録済みの収支を編集・削除
+→ 登録済みの収支から当該idを取得し、編集・削除（ログインしているユーザー以外の収支は編集できないよう制限）
 - 収支検索・絞り込み機能
 
-→ 日付・カテゴリ・店舗・タイトルなどから収支を検索
+→ 日付・カテゴリ・店舗・タイトルなどを指定し、収支を検索
 - 収支分析機能
 
-→ 年・月・日・カテゴリ・店舗などの単位で収支を集計・可視化
+→ 年・月・日・カテゴリ・店舗などの単位で収支をグループ化し集計・可視化
 <img width="1868" height="765" alt="image" src="https://github.com/user-attachments/assets/afff9345-71e7-446d-9ee2-3c0539377999" />
 
 ### マスタ管理
@@ -175,3 +180,9 @@ https://recordappweb.onrender.com/
 - Webアプリの公開経験
 
 → RenderとSupabaseを利用して、作成したWebアプリをクラウド上に公開する一連の流れを体感できた
+
+## 今後の展望
+- あらかじめ汎用性が高そうなタグをいくつか用意し、タグでの絞り込みもできるようにする
+- スマートフォンからでも利用しやすいレイアウトにする
+- アカウント名(表示名)を変更できるようにする
+- Dockerを活用し、実行環境を統一する
